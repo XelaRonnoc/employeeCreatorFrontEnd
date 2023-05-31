@@ -1,18 +1,20 @@
 import { NavLink } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { Employee } from "../../services/employee";
+import { useMutation, useQueryClient } from "react-query";
 
-enum ContractTypeEnum {
-    permanent = "permanent",
-    contract = "contract",
-    casual = "casual",
-}
+// enum ContractTypeEnum {
+//     permanent = "permanent",
+//     contract = "contract",
+//     casual = "casual",
+// }
 
-enum ContractTimeEnum {
-    fullTime = "full-time",
-    partTime = "part-time",
-}
+// enum ContractTimeEnum {
+//     fullTime = "full-time",
+//     partTime = "part-time",
+// }
 
-interface IFormInput {
+export interface EmployeePayload {
     firstName: String;
     middleName: String;
     lastName: String;
@@ -22,14 +24,47 @@ interface IFormInput {
     address: String;
     startDate: Date;
     endDate: Date;
-    contractType: ContractTypeEnum;
-    contractTime: ContractTimeEnum;
+    contractType: String;
+    contractTime: String;
     contractedHours: Number;
 }
 
 const AddEmployeeForm = () => {
-    const { register, handleSubmit } = useForm<IFormInput>();
-    const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+    const { register, handleSubmit } = useForm<EmployeePayload>();
+    const queryClient = useQueryClient();
+    const { mutate, isLoading } = useMutation(Employee.addEmployee, {
+        onSuccess: (data) => {
+            console.log(data);
+            const message = "success";
+            alert(message);
+        },
+        onError: () => {
+            alert("there was an error");
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries("create");
+        },
+    });
+
+    // const onSubmit: SubmitHandler<EmployeePayload> = async (data) => {
+    //     console.log(data);
+    //     const response = await Employee.addEmployee(data);
+    //     console.log(response);
+    // };
+
+    const onSubmit: SubmitHandler<EmployeePayload> = async (
+        data: EmployeePayload
+    ) => {
+        const { contractType, contractTime, ...rest } = data;
+        const empPackage = {
+            contractType: contractType[0],
+            contractTime: contractTime[0],
+            ...rest,
+        };
+        const employee = { ...empPackage };
+        mutate(employee);
+    };
+
     return (
         <div>
             <NavLink to="/">{`< Back`}</NavLink>
