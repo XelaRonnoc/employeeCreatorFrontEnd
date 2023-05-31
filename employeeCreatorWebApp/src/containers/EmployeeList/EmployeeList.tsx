@@ -1,17 +1,22 @@
-import { useEffect, useState } from "react";
 import { Employee } from "../../services/employee.ts";
 import EmployeeCard from "../../components/EmployeeCard/EmployeeCard.tsx";
+import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 
 const EmployeeList = () => {
-    const [employees, setEmployees] = useState<any>([]);
+    const employeesQuery = useQuery({
+        queryKey: ["employees"],
+        queryFn: Employee.getAll,
+    });
 
-    useEffect(() => {
-        const wrapper = async () => {
-            const allEmps = await Employee.getAll();
-            setEmployees(allEmps);
-        };
-        wrapper();
-    }, []);
+    const navigate = useNavigate();
+
+    const handleClick = (e: any) => {
+        e.stopPropagation();
+        navigate(`/newEmployee`);
+    };
+    if (employeesQuery.isLoading) return <h1>Loading...</h1>;
+    if (employeesQuery.isError) return <h1>Error loading data!</h1>;
     return (
         <div>
             <h1>Employees</h1>
@@ -19,21 +24,20 @@ const EmployeeList = () => {
                 <p>
                     Please click on Edit to find more details of each employee
                 </p>
-                <button>Add employee</button>
+                <button onClick={handleClick}>Add employee</button>
             </div>
-            {employees &&
-                employees.map((emp: any) => {
-                    return (
-                        <EmployeeCard
-                            key={emp.id}
-                            firstName={emp.firstName}
-                            lastName={emp.lastName}
-                            contractTime={emp.contractTime}
-                            email={emp.email}
-                            id={emp.id}
-                        />
-                    );
-                })}
+            {employeesQuery.data?.map((emp: any) => {
+                return (
+                    <EmployeeCard
+                        key={emp.id}
+                        firstName={emp.firstName}
+                        lastName={emp.lastName}
+                        contractTime={emp.contractTime}
+                        email={emp.email}
+                        id={emp.id}
+                    />
+                );
+            })}
         </div>
     );
 };
