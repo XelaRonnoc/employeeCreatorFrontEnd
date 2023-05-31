@@ -32,7 +32,7 @@ export interface EmployeePayload {
 const AddEmployeeForm = () => {
     const { register, handleSubmit } = useForm<EmployeePayload>();
     const queryClient = useQueryClient();
-    const { mutate, isLoading } = useMutation(Employee.addEmployee, {
+    const { mutate } = useMutation(Employee.addEmployee, {
         onSuccess: (data) => {
             console.log(data);
             const message = "success";

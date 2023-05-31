@@ -14,4 +14,9 @@ export class Employee {
         console.log(response);
         return response;
     }
+
+    public static async deleteById(id: string): Promise<any> {
+        const response = await instance.delete(`/employees/${id}`);
+        return response;
+    }
 }
