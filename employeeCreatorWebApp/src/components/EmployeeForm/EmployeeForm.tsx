@@ -2,6 +2,7 @@ import { NavLink, useParams } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Employee } from "../../services/employee";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useEffect } from "react";
 
 export interface EmployeePlainDetails {
     firstName: String;
@@ -46,10 +47,6 @@ export interface EmployeePayload {
 }
 
 const EmployeeForm = () => {
-    const { register, handleSubmit } = useForm<EmployeePlainDetails>({
-        defaultValues: {},
-    });
-
     const employeeQuery = useQuery({
         queryKey: ["employee"],
         queryFn: async () => {
@@ -58,9 +55,24 @@ const EmployeeForm = () => {
                 return {};
             }
             const response = await Employee.getById(id);
-            return response;
+            const { address, contract, ...rest } = response.data;
+            const result = { ...address, ...contract, ...rest };
+            return result;
         },
     });
+
+    const { register, handleSubmit, reset } = useForm<EmployeePlainDetails>({
+        defaultValues: {},
+    });
+
+    useEffect(() => {
+        if (id) {
+            reset(employeeQuery.data);
+        } else {
+            reset();
+        }
+    }, [employeeQuery.data]);
+
     const queryClient = useQueryClient();
     const { id } = useParams();
     const { mutate } = useMutation(Employee.addEmployee, {
@@ -121,8 +133,10 @@ const EmployeeForm = () => {
         const employee: EmployeePayload = { ...empPackage };
         console.log(employee);
         if (id) {
+            console.log("updating");
             mutation.mutate({ ...employee });
         } else {
+            console.log("creating");
             mutate(employee);
         }
     };

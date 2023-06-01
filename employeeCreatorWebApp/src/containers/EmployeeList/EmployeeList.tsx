@@ -12,7 +12,7 @@ const EmployeeList = () => {
 
     const handleClick = (e: any) => {
         e.stopPropagation();
-        navigate(`/newEmployee`);
+        navigate(`/Employee`);
     };
     if (employeesQuery.isLoading) return <h1>Loading...</h1>;
     if (employeesQuery.isError) return <h1>Error loading data!</h1>;

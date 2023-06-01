@@ -1,10 +1,11 @@
-import { EmployeePayload } from "../components/AddEmployeeForm/AddEmployeeForm.tsx";
+import { EmployeePayload } from "../components/EmployeeForm/EmployeeForm.tsx";
 import instance from "./axios.ts";
 
 export class Employee {
     public static async getAll(): Promise<any[]> {
         const response = await instance.get(`/employees`);
         const data = await response.data;
+        console.log(data);
         return data;
     }
 
