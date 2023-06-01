@@ -47,11 +47,13 @@ export interface EmployeePayload {
         state: String;
         postCode: String;
     };
-    startDate: Date;
-    endDate: Date;
-    contractType: String;
-    contractTime: String;
-    contractedHours: Number;
+    contract: {
+        startDate: Date;
+        endDate: Date;
+        contractType: String;
+        contractTime: String;
+        contractedHours: Number;
+    };
 }
 
 const AddEmployeeForm = () => {
@@ -88,17 +90,25 @@ const AddEmployeeForm = () => {
             suburb,
             postCode,
             state,
+            startDate,
+            endDate,
+            contractedHours,
             ...rest
         } = data;
         const empPackage = {
-            contractType: contractType[0],
-            contractTime: contractTime[0],
             address: {
                 streetName,
                 streetNumber,
                 suburb,
                 postCode,
                 state,
+            },
+            contract: {
+                contractType: contractType[0],
+                contractTime: contractTime[0],
+                startDate,
+                endDate,
+                contractedHours,
             },
             ...rest,
         };
