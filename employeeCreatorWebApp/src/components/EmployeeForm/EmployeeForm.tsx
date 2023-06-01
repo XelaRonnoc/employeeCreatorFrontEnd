@@ -57,6 +57,9 @@ const EmployeeForm = () => {
             const response = await Employee.getById(id);
             const { address, contract, ...rest } = response.data;
             const result = { ...address, ...contract, ...rest };
+            result.startDate = result.startDate.substring(0, 10);
+            result.endDate = result.endDate.substring(0, 10);
+            result.dateOfBirth = result.dateOfBirth.substring(0, 10);
             return result;
         },
     });
@@ -95,6 +98,9 @@ const EmployeeForm = () => {
             const { id, ...rest } = data;
             return Employee.putById(id, rest);
         },
+        onSuccess: () => {
+            alert("success");
+        },
     });
 
     const onSubmit: SubmitHandler<EmployeePlainDetails> = async (
@@ -122,8 +128,14 @@ const EmployeeForm = () => {
                 state,
             },
             contract: {
-                contractType: contractType[0],
-                contractTime: contractTime[0],
+                contractType:
+                    typeof contractType === "string"
+                        ? contractType
+                        : contractType[0],
+                contractTime:
+                    typeof contractTime === "string"
+                        ? contractTime
+                        : contractTime[0],
                 startDate,
                 endDate,
                 contractedHours,
