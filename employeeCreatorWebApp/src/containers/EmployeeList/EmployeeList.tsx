@@ -8,7 +8,6 @@ const EmployeeList = () => {
         queryKey: ["employees"],
         queryFn: Employee.getAll,
     });
-
     const navigate = useNavigate();
 
     const handleClick = (e: any) => {
@@ -27,16 +26,7 @@ const EmployeeList = () => {
                 <button onClick={handleClick}>Add employee</button>
             </div>
             {employeesQuery.data?.map((emp: any) => {
-                return (
-                    <EmployeeCard
-                        key={emp.id}
-                        firstName={emp.firstName}
-                        lastName={emp.lastName}
-                        contractTime={emp.contractTime}
-                        email={emp.email}
-                        id={emp.id}
-                    />
-                );
+                return <EmployeeCard key={emp.id} employee={emp} />;
             })}
         </div>
     );

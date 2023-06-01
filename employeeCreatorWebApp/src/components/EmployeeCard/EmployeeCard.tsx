@@ -1,14 +1,10 @@
 import { useMutation, useQueryClient } from "react-query";
 import { Employee } from "../../services/employee";
+import { useNavigate } from "react-router-dom";
 
-const EmployeeCard = ({
-    firstName,
-    lastName,
-    contractTime,
-    email,
-    id,
-}: any) => {
+const EmployeeCard = ({ employee }: any) => {
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
     const { mutate } = useMutation(Employee.deleteById, {
         onSuccess: (data) => {
             console.log(data);
@@ -23,20 +19,24 @@ const EmployeeCard = ({
         },
     });
 
-    const handleClick = async () => {
-        mutate(id);
+    const handleClickRemove = async () => {
+        mutate(employee.id);
+    };
+
+    const handleClickEdit = async () => {
+        navigate(`/editEmployee/${employee.id}`);
     };
     return (
         <div>
             <div>
-                <h3>{`${firstName} ${lastName}`}</h3>
-                <p>{`Contract: ${contractTime}`}</p>
-                <p>{`Email: ${email}`}</p>
+                <h3>{`${employee.firstName} ${employee.lastName}`}</h3>
+                <p>{`Contract: ${employee.contractTime}`}</p>
+                <p>{`Email: ${employee.email}`}</p>
             </div>
 
             <div>
-                <button>Edit</button>
-                <button onClick={handleClick}>Remove</button>
+                <button onClick={handleClickEdit}>Edit</button>
+                <button onClick={handleClickRemove}>Remove</button>
             </div>
         </div>
     );
