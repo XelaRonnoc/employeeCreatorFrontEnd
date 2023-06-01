@@ -14,6 +14,25 @@ import { useMutation, useQueryClient } from "react-query";
 //     partTime = "part-time",
 // }
 
+export interface EmployeePlainDetails {
+    firstName: String;
+    middleName: String;
+    lastName: String;
+    email: String;
+    mobileNum: String;
+    dateOfBirth: Date;
+    streetName: String;
+    streetNumber: String;
+    suburb: String;
+    state: String;
+    postCode: String;
+    startDate: Date;
+    endDate: Date;
+    contractType: String;
+    contractTime: String;
+    contractedHours: Number;
+}
+
 export interface EmployeePayload {
     firstName: String;
     middleName: String;
@@ -21,7 +40,13 @@ export interface EmployeePayload {
     email: String;
     mobileNum: String;
     dateOfBirth: Date;
-    address: String;
+    address: {
+        streetName: String;
+        streetNumber: String;
+        suburb: String;
+        state: String;
+        postCode: String;
+    };
     startDate: Date;
     endDate: Date;
     contractType: String;
@@ -30,7 +55,7 @@ export interface EmployeePayload {
 }
 
 const AddEmployeeForm = () => {
-    const { register, handleSubmit } = useForm<EmployeePayload>();
+    const { register, handleSubmit } = useForm<EmployeePlainDetails>();
     const queryClient = useQueryClient();
     const { mutate } = useMutation(Employee.addEmployee, {
         onSuccess: (data) => {
@@ -52,16 +77,33 @@ const AddEmployeeForm = () => {
     //     console.log(response);
     // };
 
-    const onSubmit: SubmitHandler<EmployeePayload> = async (
-        data: EmployeePayload
+    const onSubmit: SubmitHandler<EmployeePlainDetails> = async (
+        data: EmployeePlainDetails
     ) => {
-        const { contractType, contractTime, ...rest } = data;
+        const {
+            contractType,
+            contractTime,
+            streetName,
+            streetNumber,
+            suburb,
+            postCode,
+            state,
+            ...rest
+        } = data;
         const empPackage = {
             contractType: contractType[0],
             contractTime: contractTime[0],
+            address: {
+                streetName,
+                streetNumber,
+                suburb,
+                postCode,
+                state,
+            },
             ...rest,
         };
-        const employee = { ...empPackage };
+        const employee: EmployeePayload = { ...empPackage };
+        console.log(employee);
         mutate(employee);
     };
 
@@ -99,8 +141,19 @@ const AddEmployeeForm = () => {
                         pattern="04[0-9]{8}"
                         {...register("mobileNum", { required: true })}
                     />
-                    <label>Residential address</label>
-                    <input {...register("address", { required: true })} />
+                    {/* <label>Residential address</label>
+                    <input {...register("address", { required: true })} /> */}
+
+                    <label>Street Number</label>
+                    <input {...register("streetNumber", { required: true })} />
+                    <label>Street Name</label>
+                    <input {...register("streetName", { required: true })} />
+                    <label>Suburb</label>
+                    <input {...register("suburb", { required: true })} />
+                    <label>State</label>
+                    <input {...register("state", { required: true })} />
+                    <label>Post Code</label>
+                    <input {...register("postCode", { required: true })} />
                 </div>
 
                 <div>
