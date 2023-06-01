@@ -24,7 +24,7 @@ const EmployeeCard = ({ employee }: any) => {
     };
 
     const handleClickEdit = async () => {
-        navigate(`/editEmployee/${employee.id}`);
+        navigate(`/Employee/${employee.id}`);
     };
     return (
         <div>

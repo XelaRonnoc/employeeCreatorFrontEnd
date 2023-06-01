@@ -3,6 +3,7 @@ import EmployeeList from "./containers/EmployeeList/EmployeeList";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AddEmployeeForm from "./components/AddEmployeeForm/AddEmployeeForm";
 import EditEmployeeForm from "./components/EditEmployeeForm/EditEmployeeForm";
+import EmployeeForm from "./components/EmployeeForm/EmployeeForm";
 
 const queryClient = new QueryClient();
 
@@ -12,11 +13,8 @@ function App() {
             <QueryClientProvider client={queryClient}>
                 <Routes>
                     <Route path="/" element={<EmployeeList />} />
-                    <Route path="/newEmployee" element={<AddEmployeeForm />} />
-                    <Route
-                        path="/editEmployee/:id"
-                        element={<EditEmployeeForm />}
-                    />
+                    <Route path="/Employee" element={<EmployeeForm />} />
+                    <Route path="/Employee/:id" element={<EmployeeForm />} />
                 </Routes>
             </QueryClientProvider>
         </BrowserRouter>

@@ -27,4 +27,9 @@ export class Employee {
         const response = await instance.patch(`employees/${id}`, data);
         return response;
     }
+
+    public static async putById(id: string, data: any): Promise<any> {
+        const response = await instance.put(`employees/${id}`, data);
+        return response;
+    }
 }

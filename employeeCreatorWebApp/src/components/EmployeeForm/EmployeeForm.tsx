@@ -1,7 +1,7 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Employee } from "../../services/employee";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export interface EmployeePlainDetails {
     firstName: String;
@@ -45,9 +45,24 @@ export interface EmployeePayload {
     };
 }
 
-const AddEmployeeForm = () => {
-    const { register, handleSubmit } = useForm<EmployeePlainDetails>();
+const EmployeeForm = () => {
+    const { register, handleSubmit } = useForm<EmployeePlainDetails>({
+        defaultValues: {},
+    });
+
+    const employeeQuery = useQuery({
+        queryKey: ["employee"],
+        queryFn: async () => {
+            if (!id) {
+                console.log("No id In URL");
+                return {};
+            }
+            const response = await Employee.getById(id);
+            return response;
+        },
+    });
     const queryClient = useQueryClient();
+    const { id } = useParams();
     const { mutate } = useMutation(Employee.addEmployee, {
         onSuccess: (data) => {
             console.log(data);
@@ -59,6 +74,14 @@ const AddEmployeeForm = () => {
         },
         onSettled: () => {
             queryClient.invalidateQueries("create");
+        },
+    });
+
+    const mutation = useMutation({
+        mutationFn: (data: any) => {
+            console.log(data);
+            const { id, ...rest } = data;
+            return Employee.putById(id, rest);
         },
     });
 
@@ -97,7 +120,11 @@ const AddEmployeeForm = () => {
         };
         const employee: EmployeePayload = { ...empPackage };
         console.log(employee);
-        mutate(employee);
+        if (id) {
+            mutation.mutate({ ...employee });
+        } else {
+            mutate(employee);
+        }
     };
 
     return (
@@ -186,4 +213,4 @@ const AddEmployeeForm = () => {
     );
 };
 
-export default AddEmployeeForm;
+export default EmployeeForm;
