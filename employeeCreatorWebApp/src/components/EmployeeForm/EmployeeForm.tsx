@@ -131,7 +131,6 @@ const EmployeeForm = () => {
             ...rest,
         };
         const employee: EmployeePayload = { ...empPackage };
-        console.log(employee);
         if (id) {
             console.log("updating");
             mutation.mutate({ ...employee });
