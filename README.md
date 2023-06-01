@@ -81,6 +81,12 @@ To Do:
 
 ## Change logs
 
+### 01/06/2023 - Improvements to edit/add employee form
+
+-   implemented new data structure from API
+-   created autofill functionallity for edit forms
+-   allow the same form component to both do edit and create employees depending on url vairable
+
 ### 31/05/2023 - Front end Setup, created employee list, and add employee form.
 
 -   Set up REACT front end installing and configuring required libraries.
