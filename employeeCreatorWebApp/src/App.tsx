@@ -1,8 +1,6 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import EmployeeList from "./containers/EmployeeList/EmployeeList";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AddEmployeeForm from "./components/AddEmployeeForm/AddEmployeeForm";
-import EditEmployeeForm from "./components/EditEmployeeForm/EditEmployeeForm";
 import EmployeeForm from "./components/EmployeeForm/EmployeeForm";
 
 const queryClient = new QueryClient();

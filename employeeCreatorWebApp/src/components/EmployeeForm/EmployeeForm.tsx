@@ -1,8 +1,11 @@
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Employee } from "../../services/employee";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useEffect } from "react";
+
+import { Button } from "../../StyledComponents/Button/Button.ts";
+import { PageHolder } from "../../StyledComponents/PageHolder/PageHolder.ts";
 
 export interface EmployeePlainDetails {
     firstName: String;
@@ -47,6 +50,7 @@ export interface EmployeePayload {
 }
 
 const EmployeeForm = () => {
+    const navigate = useNavigate();
     const employeeQuery = useQuery({
         queryKey: ["employee"],
         queryFn: async () => {
@@ -152,8 +156,13 @@ const EmployeeForm = () => {
         }
     };
 
+    const handleClick = () => {
+        reset();
+        navigate(`/`);
+    };
+
     return (
-        <div>
+        <PageHolder>
             <NavLink to="/">{`< Back`}</NavLink>
             <h1>Employee Details</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -232,9 +241,12 @@ const EmployeeForm = () => {
                         {...register("contractedHours", { required: true })}
                     />
                 </div>
-                <input type="submit" value="Save" />
+                <Button $primary type="submit">
+                    Save
+                </Button>
+                <Button onClick={handleClick}>Cancel</Button>
             </form>
-        </div>
+        </PageHolder>
     );
 };
 

@@ -1,6 +1,11 @@
 import { useMutation, useQueryClient } from "react-query";
 import { Employee } from "../../services/employee";
 import { useNavigate } from "react-router-dom";
+import { CardContainer } from "../../StyledComponents/CardContainer/CardContainer";
+import { MiniButton } from "../../StyledComponents/MiniButton/MiniButton";
+import { SeperationBar } from "../../StyledComponents/SeperationBar/SeperationBar";
+import styled, { css } from "styled-components";
+import { calculateDateDiff } from "../../services/helperFunctions";
 
 const EmployeeCard = ({ employee }: any) => {
     const queryClient = useQueryClient();
@@ -26,19 +31,38 @@ const EmployeeCard = ({ employee }: any) => {
     const handleClickEdit = async () => {
         navigate(`/Employee/${employee.id}`);
     };
+
+    const MiniButtonHolder = styled.div<{ $primary?: boolean }>`
+        margin: 0 1em;
+        ${(props) => props.$primary && css``}
+    `;
+
+    const contractLength = calculateDateDiff(
+        new Date(employee.contract.startDate),
+        new Date(employee.contract.endDate)
+    );
+
+    const displayContractType =
+        employee.contract.contractType.substring(0, 1).toUpperCase() +
+        employee.contract.contractType.substring(
+            1,
+            employee.contract.contractType.length
+        );
+
     return (
-        <div>
+        <CardContainer>
             <div>
                 <h3>{`${employee.firstName} ${employee.lastName}`}</h3>
-                <p>{`Contract: ${employee.contractTime}`}</p>
+                <p>{`${displayContractType} - ${contractLength} years`}</p>
                 <p>{`Email: ${employee.email}`}</p>
             </div>
 
-            <div>
-                <button onClick={handleClickEdit}>Edit</button>
-                <button onClick={handleClickRemove}>Remove</button>
-            </div>
-        </div>
+            <MiniButtonHolder>
+                <MiniButton onClick={handleClickEdit}>Edit</MiniButton>
+                <SeperationBar>|</SeperationBar>
+                <MiniButton onClick={handleClickRemove}>Remove</MiniButton>
+            </MiniButtonHolder>
+        </CardContainer>
     );
 };
 
