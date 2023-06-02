@@ -2,9 +2,11 @@ import { useMutation, useQueryClient } from "react-query";
 import { Employee } from "../../services/employee";
 import { useNavigate } from "react-router-dom";
 import { CardContainer } from "../../StyledComponents/CardContainer/CardContainer";
-import { MiniButton } from "../../StyledComponents/MiniButton/MiniButton";
+import {
+    MiniButton,
+    MiniButtonHolder,
+} from "../../StyledComponents/MiniButton/MiniButton";
 import { SeperationBar } from "../../StyledComponents/SeperationBar/SeperationBar";
-import styled, { css } from "styled-components";
 import { calculateDateDiff } from "../../services/helperFunctions";
 
 const EmployeeCard = ({ employee }: any) => {
@@ -31,11 +33,6 @@ const EmployeeCard = ({ employee }: any) => {
     const handleClickEdit = async () => {
         navigate(`/Employee/${employee.id}`);
     };
-
-    const MiniButtonHolder = styled.div<{ $primary?: boolean }>`
-        margin: 0 1em;
-        ${(props) => props.$primary && css``}
-    `;
 
     const contractLength = calculateDateDiff(
         new Date(employee.contract.startDate),

@@ -10,3 +10,8 @@ export const MiniButton = styled.button<{ $primary?: boolean }>`
 
     ${(props) => props.$primary && css``}
 `;
+
+export const MiniButtonHolder = styled.div<{ $primary?: boolean }>`
+    margin: 0 1em;
+    ${(props) => props.$primary && css``}
+`;

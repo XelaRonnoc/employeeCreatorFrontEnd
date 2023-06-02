@@ -7,8 +7,9 @@ export const HeaderBackground = styled.div<{ $primary?: boolean }>`
     width: 80%;
     height 180px;
     display: flex;
-    justify-content: left;
+    flex-direction: column;
+    align-items: flex-start;
     align-self: center;
-    align-items: center;
+    justify-content: center;
     ${(props) => props.$primary && css``}
 `;

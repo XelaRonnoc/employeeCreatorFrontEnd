@@ -3,9 +3,17 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Employee } from "../../services/employee";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useEffect } from "react";
-
 import { Button } from "../../StyledComponents/Button/Button.ts";
 import { PageHolder } from "../../StyledComponents/PageHolder/PageHolder.ts";
+import {
+    StyledInput,
+    StyledForm,
+    SubSection,
+    StyledLabel,
+    Small,
+} from "../../StyledComponents/StyledForm/StyledForm.ts";
+import { Header } from "../../StyledComponents/Header/Header.ts";
+import { HeaderBackground } from "../../StyledComponents/HeaderBackground/HeaderBackground.ts";
 
 export interface EmployeePlainDetails {
     firstName: String;
@@ -163,54 +171,66 @@ const EmployeeForm = () => {
 
     return (
         <PageHolder>
-            <NavLink to="/">{`< Back`}</NavLink>
-            <h1>Employee Details</h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <div>
+            <HeaderBackground>
+                <NavLink to="/">{`< Back`}</NavLink>
+                <Header>Employee Details</Header>
+            </HeaderBackground>
+            <StyledForm onSubmit={handleSubmit(onSubmit)}>
+                <SubSection>
                     <h2>Personal information</h2>
-                    <label>First name</label>
-                    <input {...register("firstName", { required: true })} />
-                    <label>Middle name</label>
-                    <input {...register("middleName")} />
-                    <label>Last name</label>
-                    <input {...register("lastName", { required: true })} />
-                    <label>Date of birth</label>
-                    <input
+                    <StyledLabel>First name</StyledLabel>
+                    <StyledInput
+                        {...register("firstName", { required: true })}
+                    />
+                    <StyledLabel>Middle name</StyledLabel>
+                    <StyledInput {...register("middleName")} />
+                    <StyledLabel>Last name</StyledLabel>
+                    <StyledInput
+                        {...register("lastName", { required: true })}
+                    />
+                    <StyledLabel>Date of birth</StyledLabel>
+                    <StyledInput
                         type="date"
                         {...register("dateOfBirth", { required: true })}
                     />
-                </div>
+                </SubSection>
 
-                <div>
+                <SubSection>
                     <h2>Contact details</h2>
-                    <label>Email adress</label>
-                    <input
+                    <StyledLabel>Email adress</StyledLabel>
+                    <StyledInput
                         type="email"
                         {...register("email", { required: true })}
                     />
-                    <label>Mobile number</label>
-                    <small>Must be an Australian number</small>
-                    <input
+                    <StyledLabel>Mobile number</StyledLabel>
+                    <Small>Must be an Australian number</Small>
+                    <StyledInput
                         type="tel"
                         pattern="04[0-9]{8}"
                         {...register("mobileNum", { required: true })}
                     />
 
-                    <label>Street Number</label>
-                    <input {...register("streetNumber", { required: true })} />
-                    <label>Street Name</label>
-                    <input {...register("streetName", { required: true })} />
-                    <label>Suburb</label>
-                    <input {...register("suburb", { required: true })} />
-                    <label>State</label>
-                    <input {...register("state", { required: true })} />
-                    <label>Post Code</label>
-                    <input {...register("postCode", { required: true })} />
-                </div>
+                    <StyledLabel>Street Number</StyledLabel>
+                    <StyledInput
+                        {...register("streetNumber", { required: true })}
+                    />
+                    <StyledLabel>Street Name</StyledLabel>
+                    <StyledInput
+                        {...register("streetName", { required: true })}
+                    />
+                    <StyledLabel>Suburb</StyledLabel>
+                    <StyledInput {...register("suburb", { required: true })} />
+                    <StyledLabel>State</StyledLabel>
+                    <StyledInput {...register("state", { required: true })} />
+                    <StyledLabel>Post Code</StyledLabel>
+                    <StyledInput
+                        {...register("postCode", { required: true })}
+                    />
+                </SubSection>
 
-                <div>
+                <SubSection>
                     <h2>EmployeeStatus</h2>
-                    <label>Contract Type</label>
+                    <StyledLabel>Contract Type</StyledLabel>
                     <select
                         multiple
                         {...register("contractType", { required: true })}
@@ -220,32 +240,29 @@ const EmployeeForm = () => {
                         <option value="casual">Casual</option>
                     </select>
 
-                    <label>Start date</label>
-                    <input
+                    <StyledLabel>Start date</StyledLabel>
+                    <StyledInput
                         type="date"
                         {...register("startDate", { required: true })}
                     />
-                    <label>End date</label>
-                    <input type="date" {...register("endDate")} />
-                    <label>Full-time or part-time?</label>
-                    <select
-                        multiple
-                        {...register("contractTime", { required: true })}
-                    >
+                    <StyledLabel>End date</StyledLabel>
+                    <StyledInput type="date" {...register("endDate")} />
+                    <StyledLabel>Full-time or part-time?</StyledLabel>
+                    <select {...register("contractTime", { required: true })}>
                         <option value="fullTime">Full-time</option>
                         <option value="partTime">Part-time</option>
                     </select>
-                    <label>Hours per week</label>
-                    <input
+                    <StyledLabel>Hours per week</StyledLabel>
+                    <StyledInput
                         type="number"
                         {...register("contractedHours", { required: true })}
                     />
-                </div>
+                </SubSection>
                 <Button $primary type="submit">
                     Save
                 </Button>
                 <Button onClick={handleClick}>Cancel</Button>
-            </form>
+            </StyledForm>
         </PageHolder>
     );
 };
