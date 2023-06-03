@@ -307,6 +307,8 @@ const EmployeeForm = () => {
                     <StyledLabel>Hours per week</StyledLabel>
                     <StyledInput
                         type="number"
+                        min={1}
+                        max={40}
                         {...register("contractedHours", { required: true })}
                     />
                 </SubSection>
