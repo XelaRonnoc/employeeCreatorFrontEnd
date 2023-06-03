@@ -71,7 +71,6 @@ const EmployeeForm = () => {
         queryKey: ["employee"],
         queryFn: async () => {
             if (!id) {
-                console.log("No id In URL");
                 return {};
             }
             const response = await Employee.getById(id);
@@ -100,7 +99,6 @@ const EmployeeForm = () => {
     const { id } = useParams();
     const { mutate } = useMutation(Employee.addEmployee, {
         onSuccess: (data) => {
-            console.log(data);
             const message = "success";
             alert(message);
         },
@@ -114,7 +112,6 @@ const EmployeeForm = () => {
 
     const mutation = useMutation({
         mutationFn: (data: any) => {
-            console.log(data);
             const { id, ...rest } = data;
             return Employee.putById(id, rest);
         },
@@ -164,10 +161,8 @@ const EmployeeForm = () => {
         };
         const employee: EmployeePayload = { ...empPackage };
         if (id) {
-            console.log("updating");
             mutation.mutate({ ...employee });
         } else {
-            console.log("creating");
             mutate(employee);
         }
     };
