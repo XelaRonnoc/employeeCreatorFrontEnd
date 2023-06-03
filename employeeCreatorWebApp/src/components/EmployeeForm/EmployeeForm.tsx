@@ -98,7 +98,7 @@ const EmployeeForm = () => {
     const queryClient = useQueryClient();
     const { id } = useParams();
     const { mutate } = useMutation(Employee.addEmployee, {
-        onSuccess: (data) => {
+        onSuccess: () => {
             const message = "success";
             alert(message);
         },
