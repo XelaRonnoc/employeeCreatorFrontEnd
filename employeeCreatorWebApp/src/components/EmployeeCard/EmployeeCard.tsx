@@ -6,7 +6,7 @@ import {
     MiniButton,
     MiniButtonHolder,
 } from "../../StyledComponents/MiniButton/MiniButton";
-import { SeperationBar } from "../../StyledComponents/SeperationBar/SeperationBar";
+import { IconSpan } from "../../StyledComponents/IconSpan/IconSpan";
 import { calculateDateDiff } from "../../services/helperFunctions";
 
 const EmployeeCard = ({ employee }: any) => {
@@ -50,13 +50,15 @@ const EmployeeCard = ({ employee }: any) => {
         <CardContainer>
             <div>
                 <h3>{`${employee.firstName} ${employee.lastName}`}</h3>
-                <p>{`${displayContractType} - ${contractLength} years`}</p>
+                <p>{`${displayContractType} - ${contractLength} ${
+                    contractLength > 1 ? "years" : "year"
+                }`}</p>
                 <p>{`Email: ${employee.email}`}</p>
             </div>
 
             <MiniButtonHolder>
                 <MiniButton onClick={handleClickEdit}>Edit</MiniButton>
-                <SeperationBar>|</SeperationBar>
+                <IconSpan>|</IconSpan>
                 <MiniButton onClick={handleClickRemove}>Remove</MiniButton>
             </MiniButtonHolder>
         </CardContainer>

@@ -11,9 +11,17 @@ import {
     SubSection,
     StyledLabel,
     Small,
+    StyledRadio,
+    RadioHolder,
+    RadioLabel,
 } from "../../StyledComponents/StyledForm/StyledForm.ts";
 import { Header } from "../../StyledComponents/Header/Header.ts";
 import { HeaderBackground } from "../../StyledComponents/HeaderBackground/HeaderBackground.ts";
+import {
+    MiniButton,
+    MiniButtonHolder,
+} from "../../StyledComponents/MiniButton/MiniButton.ts";
+import { IconSpan } from "../../StyledComponents/IconSpan/IconSpan.ts";
 
 export interface EmployeePlainDetails {
     firstName: String;
@@ -172,7 +180,10 @@ const EmployeeForm = () => {
     return (
         <PageHolder>
             <HeaderBackground>
-                <NavLink to="/">{`< Back`}</NavLink>
+                <MiniButtonHolder>
+                    <IconSpan $primary>{`<`}</IconSpan>
+                    <MiniButton onClick={handleClick}>{` Back`}</MiniButton>
+                </MiniButtonHolder>
                 <Header>Employee Details</Header>
             </HeaderBackground>
             <StyledForm onSubmit={handleSubmit(onSubmit)}>
@@ -231,14 +242,37 @@ const EmployeeForm = () => {
                 <SubSection>
                     <h2>EmployeeStatus</h2>
                     <StyledLabel>Contract Type</StyledLabel>
-                    <select
-                        multiple
-                        {...register("contractType", { required: true })}
-                    >
-                        <option value="permanent">Permanent</option>
-                        <option value="contract">Contract</option>
-                        <option value="casual">Casual</option>
-                    </select>
+                    <RadioHolder>
+                        <StyledRadio
+                            type="radio"
+                            value="permanent"
+                            id="permanentContract"
+                            {...register("contractType", { required: true })}
+                        ></StyledRadio>
+                        <RadioLabel htmlFor="permanentContract">
+                            Permanant
+                        </RadioLabel>
+                    </RadioHolder>
+                    <RadioHolder>
+                        <StyledRadio
+                            type="radio"
+                            value="contract"
+                            id="contractContract"
+                            {...register("contractType", { required: true })}
+                        ></StyledRadio>
+                        <RadioLabel htmlFor="contractContract">
+                            Contract
+                        </RadioLabel>
+                    </RadioHolder>
+                    <RadioHolder>
+                        <StyledRadio
+                            type="radio"
+                            value="casual"
+                            id="casualContract"
+                            {...register("contractType", { required: true })}
+                        ></StyledRadio>
+                        <RadioLabel htmlFor="casualContract">Casual</RadioLabel>
+                    </RadioHolder>
 
                     <StyledLabel>Start date</StyledLabel>
                     <StyledInput
@@ -248,20 +282,40 @@ const EmployeeForm = () => {
                     <StyledLabel>End date</StyledLabel>
                     <StyledInput type="date" {...register("endDate")} />
                     <StyledLabel>Full-time or part-time?</StyledLabel>
-                    <select {...register("contractTime", { required: true })}>
-                        <option value="fullTime">Full-time</option>
-                        <option value="partTime">Part-time</option>
-                    </select>
+                    <RadioHolder>
+                        <StyledRadio
+                            type="radio"
+                            value="fullTime"
+                            id="fullTimeContract"
+                            {...register("contractTime", { required: true })}
+                        ></StyledRadio>
+                        <RadioLabel htmlFor="fullTimeContract">
+                            Full-time
+                        </RadioLabel>
+                    </RadioHolder>
+                    <RadioHolder>
+                        <StyledRadio
+                            type="radio"
+                            value="partTime"
+                            id="partTimeContract"
+                            {...register("contractTime", { required: true })}
+                        ></StyledRadio>
+                        <RadioLabel htmlFor="partTimeContract">
+                            Part-time
+                        </RadioLabel>
+                    </RadioHolder>
                     <StyledLabel>Hours per week</StyledLabel>
                     <StyledInput
                         type="number"
                         {...register("contractedHours", { required: true })}
                     />
                 </SubSection>
-                <Button $primary type="submit">
-                    Save
-                </Button>
-                <Button onClick={handleClick}>Cancel</Button>
+                <div>
+                    <Button $primary type="submit">
+                        Save
+                    </Button>
+                    <Button onClick={handleClick}>Cancel</Button>
+                </div>
             </StyledForm>
         </PageHolder>
     );

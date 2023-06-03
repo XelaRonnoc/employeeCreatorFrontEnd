@@ -22,6 +22,7 @@ export const StyledInput = styled.input`
     padding: 7px 12px;
     font-size: 1.2rem;
     max-width: 300px;
+    cursor: text;
 `;
 
 export const StyledLabel = styled.label`
@@ -32,4 +33,24 @@ export const StyledLabel = styled.label`
 export const Small = styled.small`
     font-size: 10px;
     color: grey;
+`;
+
+export const StyledRadio = styled.input`
+    border: 2px solid grey;
+    border-radius: 5px;
+    padding: 7px 12px;
+    font-size: 1.2rem;
+    max-width: 300px;
+    cursor: pointer;
+    width: 20px;
+`;
+
+export const RadioHolder = styled.div`
+    display: flex;
+    gap: 10px;
+    padding: 5px;
+`;
+
+export const RadioLabel = styled.label`
+    font-size: 14px;
 `;

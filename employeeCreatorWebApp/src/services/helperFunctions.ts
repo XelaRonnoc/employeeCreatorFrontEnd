@@ -1,5 +1,10 @@
 export const calculateDateDiff = (start: Date, end: Date) => {
-    let diffMs = end.getMilliseconds() - start.getMilliseconds();
+    console.log(end.getMilliseconds);
+    let diffMs = end.getTime() - start.getTime();
     let date = new Date(diffMs);
-    return Math.abs(date.getUTCFullYear() - 1970);
+    const length = Math.abs(date.getUTCFullYear() - 1970);
+    if (length < 1) {
+        return 1;
+    }
+    return length;
 };

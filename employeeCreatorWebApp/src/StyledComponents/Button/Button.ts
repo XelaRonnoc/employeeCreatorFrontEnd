@@ -7,6 +7,7 @@ export const Button = styled.button<{ $primary?: boolean }>`
     color: grey;
     margin: 0 1em;
     padding: 10px 50px;
+    cursor: pointer;
 
     ${(props) =>
         props.$primary &&

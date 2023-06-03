@@ -7,6 +7,7 @@ export const MiniButton = styled.button<{ $primary?: boolean }>`
     color: #2d5299;
     margin: 0;
     padding: 0;
+    cursor: Pointer;
 
     ${(props) => props.$primary && css``}
 `;
