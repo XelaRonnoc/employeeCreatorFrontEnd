@@ -81,6 +81,15 @@ To Do:
 
 ## Change logs
 
+### 03/06/2023 - Styling
+
+-   added styling for the edit and add employee form
+
+### 02/06/2023 - Bug Fixes on Edit Employee Form, Styling
+
+-   Fixed a bug where upon editing an employee only the first letter of the contract type and time would be sent to backend
+-   added styling to list, header, and card componenets using styled components
+
 ### 01/06/2023 - Improvements to edit/add employee form
 
 -   implemented new data structure from API
