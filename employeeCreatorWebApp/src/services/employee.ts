@@ -5,7 +5,6 @@ export class Employee {
     public static async getAll(): Promise<any[]> {
         const response = await instance.get(`/employees`);
         const data = await response.data;
-        console.log(data);
         return data;
     }
 

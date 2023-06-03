@@ -14,7 +14,6 @@ const EmployeeCard = ({ employee }: any) => {
     const navigate = useNavigate();
     const { mutate } = useMutation(Employee.deleteById, {
         onSuccess: (data) => {
-            console.log(data);
             const message = "success";
             alert(message);
         },
