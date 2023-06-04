@@ -81,6 +81,12 @@ To Do:
 
 ## Change logs
 
+### 04/06/2023 - added redux store and yup form validation
+
+    - added Yup form vaidation for the add and update form
+    - added a redux store that allows the edit form to avoid having to talk to the DB and instead can just search the redux store by id
+    - added method for adding ongoing employees (Still has some validation issues although this does not effect functionality but isn't good UX)
+
 ### 03/06/2023 - Styling
 
 -   added styling for the edit and add employee form
