@@ -22,6 +22,35 @@ import {
     MiniButtonHolder,
 } from "../../StyledComponents/MiniButton/MiniButton.ts";
 import { IconSpan } from "../../StyledComponents/IconSpan/IconSpan.ts";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import FullInput, { FullRadio } from "../FullInput/FullInput.tsx";
+
+const phoneRegexp = /04[0-9]{8}/;
+const registerSchema = Yup.object().shape({
+    firstName: Yup.string().required("First Name is required"),
+    middleName: Yup.string().optional(),
+    lastName: Yup.string().required("Last name is required"),
+    email: Yup.string().email("Email is invalid").required("Email is required"),
+    mobileNum: Yup.string()
+        .matches(phoneRegexp, "Phone number must be an australian number")
+        .required("Mobile Number is required"),
+    dateOfBirth: Yup.date().required("Date of Birth is required"),
+    streetName: Yup.string().required("Street name is required"),
+    streetNumber: Yup.string().required("Street number is required"),
+    suburb: Yup.string().required("Suburb is required"),
+    state: Yup.string().required("State/territory is required"),
+    postCode: Yup.string().required("Post code is required"),
+    startDate: Yup.date().required("Start date is required"),
+    endDate: Yup.date().optional(),
+    contractType: Yup.string().required("Contract Type is required"),
+    contractTime: Yup.string().required("Contract Time is required"),
+    contractedHours: Yup.number()
+        .integer()
+        .min(1, "minimum 1 hour per week")
+        .max(40, "maximum 40 hours per week")
+        .required("Number of hours per week is required"),
+});
 
 export interface EmployeePlainDetails {
     firstName: String;
@@ -83,8 +112,32 @@ const EmployeeForm = () => {
         },
     });
 
-    const { register, handleSubmit, reset } = useForm<EmployeePlainDetails>({
-        defaultValues: {},
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(registerSchema),
+        defaultValues: {
+            firstName: "",
+            middleName: "",
+            lastName: "",
+            email: "",
+            mobileNum: "",
+            dateOfBirth: new Date(),
+            streetName: "",
+            streetNumber: "",
+            suburb: "",
+            state: "",
+            postCode: "",
+            startDate: new Date(),
+            endDate: new Date(),
+            contractType: "",
+            contractTime: "",
+            contractedHours: 1,
+        },
+        mode: "all",
     });
 
     useEffect(() => {
@@ -185,52 +238,63 @@ const EmployeeForm = () => {
                 <SubSection>
                     <h2>Personal information</h2>
                     <StyledLabel>First name</StyledLabel>
-                    <StyledInput
-                        {...register("firstName", { required: true })}
+                    <FullInput
+                        error={errors.firstName}
+                        {...register("firstName")}
                     />
                     <StyledLabel>Middle name</StyledLabel>
-                    <StyledInput {...register("middleName")} />
+                    <FullInput
+                        error={errors.middleName}
+                        {...register("middleName")}
+                    />
                     <StyledLabel>Last name</StyledLabel>
-                    <StyledInput
-                        {...register("lastName", { required: true })}
+                    <FullInput
+                        error={errors.lastName}
+                        {...register("lastName")}
                     />
                     <StyledLabel>Date of birth</StyledLabel>
-                    <StyledInput
+                    <FullInput
+                        error={errors.dateOfBirth}
                         type="date"
-                        {...register("dateOfBirth", { required: true })}
+                        {...register("dateOfBirth")}
                     />
                 </SubSection>
 
                 <SubSection>
                     <h2>Contact details</h2>
                     <StyledLabel>Email adress</StyledLabel>
-                    <StyledInput
+                    <FullInput
+                        error={errors.email}
                         type="email"
-                        {...register("email", { required: true })}
+                        {...register("email")}
                     />
                     <StyledLabel>Mobile number</StyledLabel>
                     <Small>Must be an Australian number</Small>
-                    <StyledInput
-                        type="tel"
-                        pattern="04[0-9]{8}"
-                        {...register("mobileNum", { required: true })}
+                    <FullInput
+                        error={errors.mobileNum}
+                        // type="tel"
+                        // pattern="04[0-9]{8}"
+                        {...register("mobileNum")}
                     />
 
                     <StyledLabel>Street Number</StyledLabel>
-                    <StyledInput
-                        {...register("streetNumber", { required: true })}
+                    <FullInput
+                        error={errors.streetNumber}
+                        {...register("streetNumber")}
                     />
                     <StyledLabel>Street Name</StyledLabel>
-                    <StyledInput
-                        {...register("streetName", { required: true })}
+                    <FullInput
+                        error={errors.streetName}
+                        {...register("streetName")}
                     />
                     <StyledLabel>Suburb</StyledLabel>
-                    <StyledInput {...register("suburb", { required: true })} />
+                    <FullInput error={errors.suburb} {...register("suburb")} />
                     <StyledLabel>State</StyledLabel>
-                    <StyledInput {...register("state", { required: true })} />
+                    <FullInput error={errors.state} {...register("state")} />
                     <StyledLabel>Post Code</StyledLabel>
-                    <StyledInput
-                        {...register("postCode", { required: true })}
+                    <FullInput
+                        error={errors.postCode}
+                        {...register("postCode")}
                     />
                 </SubSection>
 
@@ -238,73 +302,84 @@ const EmployeeForm = () => {
                     <h2>EmployeeStatus</h2>
                     <StyledLabel>Contract Type</StyledLabel>
                     <RadioHolder>
-                        <StyledRadio
+                        <FullRadio
                             type="radio"
                             value="permanent"
                             id="permanentContract"
-                            {...register("contractType", { required: true })}
-                        ></StyledRadio>
+                            error={errors.contractType}
+                            {...register("contractType")}
+                        ></FullRadio>
                         <RadioLabel htmlFor="permanentContract">
                             Permanant
                         </RadioLabel>
                     </RadioHolder>
                     <RadioHolder>
-                        <StyledRadio
+                        <FullRadio
                             type="radio"
                             value="contract"
                             id="contractContract"
-                            {...register("contractType", { required: true })}
-                        ></StyledRadio>
+                            error={errors.contractType}
+                            {...register("contractType")}
+                        ></FullRadio>
                         <RadioLabel htmlFor="contractContract">
                             Contract
                         </RadioLabel>
                     </RadioHolder>
                     <RadioHolder>
-                        <StyledRadio
+                        <FullRadio
                             type="radio"
                             value="casual"
                             id="casualContract"
-                            {...register("contractType", { required: true })}
-                        ></StyledRadio>
+                            error={errors.contractType}
+                            {...register("contractType")}
+                        ></FullRadio>
                         <RadioLabel htmlFor="casualContract">Casual</RadioLabel>
                     </RadioHolder>
 
                     <StyledLabel>Start date</StyledLabel>
-                    <StyledInput
+                    <FullInput
+                        error={errors.startDate}
                         type="date"
-                        {...register("startDate", { required: true })}
+                        {...register("startDate")}
                     />
                     <StyledLabel>End date</StyledLabel>
-                    <StyledInput type="date" {...register("endDate")} />
+                    <FullInput
+                        error={errors.endDate}
+                        type="date"
+                        {...register("endDate")}
+                    />
                     <StyledLabel>Full-time or part-time?</StyledLabel>
                     <RadioHolder>
-                        <StyledRadio
+                        <FullRadio
                             type="radio"
                             value="fullTime"
                             id="fullTimeContract"
-                            {...register("contractTime", { required: true })}
-                        ></StyledRadio>
+                            error={errors.contractTime}
+                            {...register("contractTime")}
+                        ></FullRadio>
                         <RadioLabel htmlFor="fullTimeContract">
                             Full-time
                         </RadioLabel>
                     </RadioHolder>
                     <RadioHolder>
-                        <StyledRadio
+                        <FullRadio
                             type="radio"
                             value="partTime"
                             id="partTimeContract"
-                            {...register("contractTime", { required: true })}
-                        ></StyledRadio>
+                            error={errors.contractTime}
+                            {...register("contractTime")}
+                        ></FullRadio>
                         <RadioLabel htmlFor="partTimeContract">
                             Part-time
                         </RadioLabel>
                     </RadioHolder>
                     <StyledLabel>Hours per week</StyledLabel>
-                    <StyledInput
+                    <FullInput
+                        error={errors.contractedHours}
                         type="number"
                         min={1}
                         max={40}
-                        {...register("contractedHours", { required: true })}
+                        {...register("contractedHours")}
                     />
                 </SubSection>
                 <div>

@@ -16,14 +16,21 @@ export const SubSection = styled.div`
     margin: 20px 0;
 `;
 
-export const StyledInput = styled.input`
+interface InputProps {
+    error: boolean;
+}
+
+export const StyledInput = styled.input(({ error }: InputProps) => [
+    `
     border: 2px solid grey;
     border-radius: 5px;
     padding: 7px 12px;
     font-size: 1.2rem;
     max-width: 300px;
     cursor: text;
-`;
+`,
+    error && `border: 2px solid red;`,
+]);
 
 export const StyledLabel = styled.label`
     font-size: 12px;
@@ -35,7 +42,8 @@ export const Small = styled.small`
     color: grey;
 `;
 
-export const StyledRadio = styled.input`
+export const StyledRadio = styled.input(({ error }: InputProps) => [
+    `
     border: 2px solid grey;
     border-radius: 5px;
     padding: 7px 12px;
@@ -43,7 +51,9 @@ export const StyledRadio = styled.input`
     max-width: 300px;
     cursor: pointer;
     width: 20px;
-`;
+`,
+    error && `border: 2px solid red;`,
+]);
 
 export const RadioHolder = styled.div`
     display: flex;
@@ -53,4 +63,8 @@ export const RadioHolder = styled.div`
 
 export const RadioLabel = styled.label`
     font-size: 14px;
+`;
+
+export const ErrorP = styled.p`
+    color: red;
 `;
