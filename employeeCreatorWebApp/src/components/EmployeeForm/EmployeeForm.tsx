@@ -12,6 +12,8 @@ import {
     Small,
     RadioHolder,
     RadioLabel,
+    CheckBoxHolder,
+    CheckBoxLabel,
 } from "../../StyledComponents/StyledForm/StyledForm.ts";
 import { Header } from "../../StyledComponents/Header/Header.ts";
 import { HeaderBackground } from "../../StyledComponents/HeaderBackground/HeaderBackground.ts";
@@ -22,7 +24,7 @@ import {
 import { IconSpan } from "../../StyledComponents/IconSpan/IconSpan.ts";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import FullInput, { FullRadio } from "../FullInput/FullInput.tsx";
+import FullInput, { FullCheckBox, FullRadio } from "../FullInput/FullInput.tsx";
 import { useAppSelector } from "../../app/hooks.ts";
 
 Yup.addMethod(Yup.date, "stripEmptyString", function () {
@@ -162,15 +164,19 @@ const EmployeeForm = () => {
     useEffect(() => {
         if (id) {
             const curEmployee = findFromStore(allEmployees, parseInt(id));
-            const { address, contract, ...rest } = curEmployee;
-            const destEmp = { ...address, ...contract, ...rest };
-            destEmp.startDate = destEmp.startDate.substring(0, 10);
-            destEmp.endDate
-                ? (destEmp.endDate = destEmp.endDate.substring(0, 10))
-                : setOngoing(true);
-            destEmp.dateOfBirth = destEmp.dateOfBirth.substring(0, 10);
-            destEmp.ongoing = destEmp.endDate ? "" : "ongoing"; // checks ongoing box on if no date
-            reset({ ...destEmp });
+            if (curEmployee) {
+                const { address, contract, ...rest } = curEmployee;
+                const destEmp = { ...address, ...contract, ...rest };
+                destEmp.startDate = destEmp.startDate.substring(0, 10);
+                destEmp.endDate
+                    ? (destEmp.endDate = destEmp.endDate.substring(0, 10))
+                    : setOngoing(true);
+                destEmp.dateOfBirth = destEmp.dateOfBirth.substring(0, 10);
+                destEmp.ongoing = destEmp.endDate ? "" : "ongoing"; // checks ongoing box on if no date
+                reset({ ...destEmp });
+            } else {
+                navigate("/employee");
+            }
         } else {
             reset();
         }
@@ -376,15 +382,18 @@ const EmployeeForm = () => {
                         type="date"
                         {...register("endDate")}
                     />
-                    <FullInput
-                        type="checkbox"
-                        onClick={() =>
-                            ongoing ? setOngoing(false) : setOngoing(true)
-                        }
-                        {...register("ongoing")}
-                        error={errors.ongoing}
-                        value={"ongoing"}
-                    />
+                    <CheckBoxHolder>
+                        <FullCheckBox
+                            type="checkbox"
+                            onClick={() =>
+                                ongoing ? setOngoing(false) : setOngoing(true)
+                            }
+                            {...register("ongoing")}
+                            error={errors.ongoing}
+                            value={"ongoing"}
+                        />
+                        <CheckBoxLabel>Ongoing?</CheckBoxLabel>
+                    </CheckBoxHolder>
                     <StyledLabel>Full-time or part-time?</StyledLabel>
                     <RadioHolder>
                         <FullRadio

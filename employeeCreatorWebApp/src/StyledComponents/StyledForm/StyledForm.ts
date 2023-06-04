@@ -68,3 +68,27 @@ export const RadioLabel = styled.label`
 export const ErrorP = styled.p`
     color: red;
 `;
+
+export const StyledCheckBox = styled.input(({ error }: InputProps) => [
+    `
+    border: 2px solid grey;
+    border-radius: 5px;
+    padding: 7px 12px;
+    font-size: 1.2rem;
+    max-width: 300px;
+    cursor: pointer;
+    width: 20px;
+`,
+    error && `border: 2px solid red;`,
+]);
+
+export const CheckBoxHolder = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+`;
+
+export const CheckBoxLabel = styled.label`
+    font-size: 14px;
+`;

@@ -1,5 +1,6 @@
 import { forwardRef, InputHTMLAttributes } from "react";
 import {
+    StyledCheckBox,
     StyledInput,
     StyledRadio,
 } from "../../StyledComponents/StyledForm/StyledForm";
@@ -30,6 +31,21 @@ export const FullRadio = forwardRef<HTMLInputElement, InputProps>(
         return (
             <div>
                 <StyledRadio
+                    ref={ref}
+                    error={Boolean(error?.message)}
+                    {...rest}
+                />
+                {error?.message && <ErrorP> {error.message}</ErrorP>}
+            </div>
+        );
+    }
+);
+
+export const FullCheckBox = forwardRef<HTMLInputElement, InputProps>(
+    ({ error, ...rest }, ref) => {
+        return (
+            <div>
+                <StyledCheckBox
                     ref={ref}
                     error={Boolean(error?.message)}
                     {...rest}
