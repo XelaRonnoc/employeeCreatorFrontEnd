@@ -33,10 +33,12 @@ const EmployeeCard = ({ employee }: any) => {
         navigate(`/Employee/${employee.id}`);
     };
 
-    const contractLength = calculateDateDiff(
-        new Date(employee.contract.startDate),
-        new Date(employee.contract.endDate)
-    );
+    const contractLength = employee.contract.endDate
+        ? calculateDateDiff(
+              new Date(employee.contract.startDate),
+              new Date(employee.contract.endDate)
+          )
+        : "Ongoing";
 
     const displayContractType =
         employee.contract.contractType.substring(0, 1).toUpperCase() +
@@ -50,7 +52,11 @@ const EmployeeCard = ({ employee }: any) => {
             <div>
                 <h3>{`${employee.firstName} ${employee.lastName}`}</h3>
                 <p>{`${displayContractType} - ${contractLength} ${
-                    contractLength > 1 ? "years" : "year"
+                    typeof contractLength === "number"
+                        ? contractLength > 1
+                            ? "years"
+                            : "year"
+                        : ""
                 }`}</p>
                 <p>{`Email: ${employee.email}`}</p>
             </div>

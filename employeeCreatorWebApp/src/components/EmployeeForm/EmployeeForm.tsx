@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Employee } from "../../services/employee";
 import { useMutation, useQueryClient } from "react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../../StyledComponents/Button/Button.ts";
 import { PageHolder } from "../../StyledComponents/PageHolder/PageHolder.ts";
 import {
@@ -25,8 +25,13 @@ import * as Yup from "yup";
 import FullInput, { FullRadio } from "../FullInput/FullInput.tsx";
 import { useAppSelector } from "../../app/hooks.ts";
 
+Yup.addMethod(Yup.date, "stripEmptyString", function () {
+    return this.transform((value) => (value === "" ? undefined : value));
+});
+
 const phoneRegexp = /04[0-9]{8}/;
 const registerSchema = Yup.object().shape({
+    ongoing: Yup.string().optional(),
     firstName: Yup.string().required("First Name is required"),
     middleName: Yup.string().optional(),
     lastName: Yup.string().required("Last name is required"),
@@ -34,14 +39,36 @@ const registerSchema = Yup.object().shape({
     mobileNum: Yup.string()
         .matches(phoneRegexp, "Phone number must be an australian number")
         .required("Mobile Number is required"),
-    dateOfBirth: Yup.date().required("Date of Birth is required"),
+    dateOfBirth: Yup.date()
+        .typeError("Date of Birth is required")
+        .defined("Date of Birth is required")
+        .nonNullable()
+        .required("Date of Birth is required"),
     streetName: Yup.string().required("Street name is required"),
     streetNumber: Yup.string().required("Street number is required"),
     suburb: Yup.string().required("Suburb is required"),
     state: Yup.string().required("State/territory is required"),
     postCode: Yup.string().required("Post code is required"),
-    startDate: Yup.date().required("Start date is required"),
-    endDate: Yup.date().optional(),
+    startDate: Yup.date()
+        .typeError("Start Date is required")
+        .defined("Start Date is required")
+        .nonNullable()
+        .required("Start date is required"),
+    endDate: Yup.date().when("ongoing", (value) => {
+        if (!value[0] || value[0] === "false") {
+            console.log(value);
+            return Yup.date().required().typeError("Must Not be Empty");
+        } else {
+            console.log(value, "bottom");
+            return Yup.date()
+                .nullable()
+                .transform((value, originalValue) =>
+                    originalValue === "" ? null : value
+                )
+                .optional()
+                .typeError("");
+        }
+    }),
     contractType: Yup.string().required("Contract Type is required"),
     contractTime: Yup.string().required("Contract Time is required"),
     contractedHours: Yup.number()
@@ -96,7 +123,7 @@ export interface EmployeePayload {
 const EmployeeForm = () => {
     const navigate = useNavigate();
     const allEmployees = useAppSelector((state) => state.employeeHolder.value);
-
+    const [ongoing, setOngoing] = useState(false);
     const {
         register,
         handleSubmit,
@@ -121,8 +148,10 @@ const EmployeeForm = () => {
             contractType: "",
             contractTime: "",
             contractedHours: 1,
+            ongoing: "",
         },
         mode: "all",
+        reValidateMode: "onChange",
     });
 
     const findFromStore = (allEmployees: Array<any>, id: number) => {
@@ -136,8 +165,11 @@ const EmployeeForm = () => {
             const { address, contract, ...rest } = curEmployee;
             const destEmp = { ...address, ...contract, ...rest };
             destEmp.startDate = destEmp.startDate.substring(0, 10);
-            destEmp.endDate = destEmp.endDate.substring(0, 10);
+            destEmp.endDate
+                ? (destEmp.endDate = destEmp.endDate.substring(0, 10))
+                : setOngoing(true);
             destEmp.dateOfBirth = destEmp.dateOfBirth.substring(0, 10);
+            destEmp.ongoing = destEmp.endDate ? "" : "ongoing"; // checks ongoing box on if no date
             reset({ ...destEmp });
         } else {
             reset();
@@ -183,9 +215,11 @@ const EmployeeForm = () => {
             startDate,
             endDate,
             contractedHours,
+            dateOfBirth,
             ...rest
         } = data;
         const empPackage = {
+            dateOfBirth,
             address: {
                 streetName,
                 streetNumber,
@@ -341,6 +375,15 @@ const EmployeeForm = () => {
                         error={errors.endDate}
                         type="date"
                         {...register("endDate")}
+                    />
+                    <FullInput
+                        type="checkbox"
+                        onClick={() =>
+                            ongoing ? setOngoing(false) : setOngoing(true)
+                        }
+                        {...register("ongoing")}
+                        error={errors.ongoing}
+                        value={"ongoing"}
                     />
                     <StyledLabel>Full-time or part-time?</StyledLabel>
                     <RadioHolder>
