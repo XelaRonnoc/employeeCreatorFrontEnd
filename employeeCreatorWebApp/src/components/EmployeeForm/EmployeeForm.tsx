@@ -1,17 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Employee } from "../../services/employee";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { useEffect } from "react";
 import { Button } from "../../StyledComponents/Button/Button.ts";
 import { PageHolder } from "../../StyledComponents/PageHolder/PageHolder.ts";
 import {
-    StyledInput,
     StyledForm,
     SubSection,
     StyledLabel,
     Small,
-    StyledRadio,
     RadioHolder,
     RadioLabel,
 } from "../../StyledComponents/StyledForm/StyledForm.ts";
@@ -25,6 +23,7 @@ import { IconSpan } from "../../StyledComponents/IconSpan/IconSpan.ts";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import FullInput, { FullRadio } from "../FullInput/FullInput.tsx";
+import { useAppSelector } from "../../app/hooks.ts";
 
 const phoneRegexp = /04[0-9]{8}/;
 const registerSchema = Yup.object().shape({
@@ -96,21 +95,7 @@ export interface EmployeePayload {
 
 const EmployeeForm = () => {
     const navigate = useNavigate();
-    const employeeQuery = useQuery({
-        queryKey: ["employee"],
-        queryFn: async () => {
-            if (!id) {
-                return {};
-            }
-            const response = await Employee.getById(id);
-            const { address, contract, ...rest } = response.data;
-            const result = { ...address, ...contract, ...rest };
-            result.startDate = result.startDate.substring(0, 10);
-            result.endDate = result.endDate.substring(0, 10);
-            result.dateOfBirth = result.dateOfBirth.substring(0, 10);
-            return result;
-        },
-    });
+    const allEmployees = useAppSelector((state) => state.employeeHolder.value);
 
     const {
         register,
@@ -140,13 +125,24 @@ const EmployeeForm = () => {
         mode: "all",
     });
 
+    const findFromStore = (allEmployees: Array<any>, id: number) => {
+        const thisEmployee = allEmployees.find((emp) => emp.id === id);
+        return thisEmployee;
+    };
+
     useEffect(() => {
         if (id) {
-            reset(employeeQuery.data);
+            const curEmployee = findFromStore(allEmployees, parseInt(id));
+            const { address, contract, ...rest } = curEmployee;
+            const destEmp = { ...address, ...contract, ...rest };
+            destEmp.startDate = destEmp.startDate.substring(0, 10);
+            destEmp.endDate = destEmp.endDate.substring(0, 10);
+            destEmp.dateOfBirth = destEmp.dateOfBirth.substring(0, 10);
+            reset({ ...destEmp });
         } else {
             reset();
         }
-    }, [employeeQuery.data]);
+    }, []);
 
     const queryClient = useQueryClient();
     const { id } = useParams();
@@ -272,8 +268,6 @@ const EmployeeForm = () => {
                     <Small>Must be an Australian number</Small>
                     <FullInput
                         error={errors.mobileNum}
-                        // type="tel"
-                        // pattern="04[0-9]{8}"
                         {...register("mobileNum")}
                     />
 
