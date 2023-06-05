@@ -118,7 +118,7 @@ To Do:
 ## What did you struggle with?
 
 ### 05/06/2023
--   Front end mocks for specific functions. I cannot for the life of me get this working with vitest currenty. An absolute nightmare. The test is still calling the actual api instead of the mock function.
+-   Front end mocks for specific functions. I was really stuggling to get the mocks working with TS but after much perserverance I got there.
 
 ---
 
