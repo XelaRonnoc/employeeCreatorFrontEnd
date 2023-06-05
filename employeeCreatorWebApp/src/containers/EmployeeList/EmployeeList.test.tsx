@@ -1,22 +1,12 @@
-import {
-    Vitest,
-    afterEach,
-    beforeEach,
-    describe,
-    expect,
-    test,
-    vi,
-} from "vitest";
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { Provider } from "react-redux";
 import { store } from "../../app/store";
 import { render, waitFor } from "@testing-library/react";
-import * as empList from "./EmployeeList";
-import EmployeeList, { queryWrapper } from "./EmployeeList";
+import EmployeeList from "./EmployeeList";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter, MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import { Employee } from "../../services/employee";
+import userEvent from "@testing-library/user-event";
 
 const renderEmployeeList = () => {
     const queryClient = new QueryClient();
@@ -51,9 +41,34 @@ const mockData = [
         contract: {
             contractTime: "partTime",
             contractType: "permanent",
-            contractedHours: 40,
+            contractedHours: 20,
             endDate: "2023-07-09T00:00:00.000+00:00",
             id: 1,
+            startDate: "2023-06-27T00:00:00.000+00:00",
+        },
+    },
+    {
+        dateOfBirth: "2023-06-13T00:00:00.000+00:00",
+        email: "alex@gmail.com",
+        firstName: "Frodo",
+        id: 2,
+        lastName: "Smith",
+        middleName: "Took",
+        mobileNum: "0437811465",
+        address: {
+            id: 2,
+            postCode: "2072",
+            state: "NSW",
+            streetName: "Babel Street",
+            streetNumber: "15",
+            suburb: "Gordon",
+        },
+        contract: {
+            contractTime: "fullTime",
+            contractType: "contract",
+            contractedHours: 40,
+            endDate: "2023-07-09T00:00:00.000+00:00",
+            id: 2,
             startDate: "2023-06-27T00:00:00.000+00:00",
         },
     },
@@ -62,19 +77,13 @@ const mockData = [
 vi.mock("../../services/employee");
 
 const mockedGetAll = Employee.getAll as jest.Mock<Promise<any[]>>;
+const mockedDelete = Employee.deleteById as jest.Mock<Promise<any>>;
 describe("Employee List test", () => {
-    let spy: any;
     beforeEach(() => {
-        spy = vi.spyOn(empList, "queryWrapper").mockImplementation(
-            vi.fn().mockReturnValue({
-                data: mockData,
-            })
-        );
-        console.log(spy, "this is the spy");
+        mockedGetAll.mockResolvedValue(mockData);
     });
 
     test("displays list page and list of employees", async () => {
-        mockedGetAll.mockResolvedValue(mockData);
         const rendered = renderEmployeeList();
 
         const header = rendered.getByText("Employees' list");
@@ -86,5 +95,20 @@ describe("Employee List test", () => {
             const newUser = rendered.getByText("Bilbo Gray");
             expect(newUser).toBeDefined();
         });
+    });
+
+    test("on remove clicked delete function is called", async () => {
+        mockedDelete.mockImplementation();
+        const rendered = renderEmployeeList();
+
+        const buttons = await waitFor(() => {
+            return rendered.getAllByText("Remove");
+        });
+
+        expect(buttons).toBeDefined();
+        const user = userEvent.setup();
+        await user.click(buttons[1]);
+
+        expect(mockedDelete).toHaveBeenCalledWith(2);
     });
 });
