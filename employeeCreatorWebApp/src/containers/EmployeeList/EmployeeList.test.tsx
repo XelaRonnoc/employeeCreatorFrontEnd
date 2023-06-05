@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { Provider } from "react-redux";
 import { store } from "../../app/store";
-import { render, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import EmployeeList from "./EmployeeList";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
@@ -110,5 +110,13 @@ describe("Employee List test", () => {
         await user.click(buttons[1]);
 
         expect(mockedDelete).toHaveBeenCalledWith(2);
+    });
+
+    test("navigates to another page on click of Add employee button", async () => {
+        const rendered = renderEmployeeList();
+        const button = rendered.getByText("Add employee");
+        expect(button).toBeDefined();
+        const user = userEvent.setup();
+        await user.click(button);
     });
 });
