@@ -1,6 +1,6 @@
 import { Employee } from "../../services/employee.ts";
 import EmployeeCard from "../../components/EmployeeCard/EmployeeCard.tsx";
-import { useQuery } from "react-query";
+import { UseQueryResult, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../../StyledComponents/Header/Header.ts";
 import { HeaderBackground } from "../../StyledComponents/HeaderBackground/HeaderBackground.ts";
@@ -12,12 +12,23 @@ import { useAppDispatch } from "../../app/hooks.ts";
 import { fillAll } from "../../app/employeesSlice.ts";
 import { useEffect } from "react";
 
-const EmployeeList = () => {
-    const dispatch = useAppDispatch();
-    const employeesQuery = useQuery({
+export const queryWrapper = () => {
+    const query = useQuery({
         queryKey: ["employees"],
         queryFn: Employee.getAll,
     });
+    const response = query.data;
+    return response;
+};
+
+const EmployeeList = () => {
+    const dispatch = useAppDispatch();
+
+    const employeesQueryData = queryWrapper();
+    // const employeesQuery = useQuery({
+    //     queryKey: ["employees"],
+    //     queryFn: Employee.getAll,
+    // });
     const navigate = useNavigate();
 
     const handleClick = (e: any) => {
@@ -26,13 +37,14 @@ const EmployeeList = () => {
     };
 
     useEffect(() => {
-        if (employeesQuery.data) {
-            dispatch(fillAll(employeesQuery.data));
+        if (employeesQueryData !== undefined) {
+            console.log(employeesQueryData, "queryData");
+            dispatch(fillAll(employeesQueryData));
         }
-    }, [employeesQuery.data]);
+    }, [employeesQueryData]);
 
-    if (employeesQuery.isLoading) return <h1>Loading...</h1>;
-    if (employeesQuery.isError) return <h1>Error loading data!</h1>;
+    // if (employeesQuery.isLoading) return <h1>Loading...</h1>;
+    // if (employeesQuery.isError) return <h1>Error loading data!</h1>;
     return (
         <PageHolder>
             <HeaderBackground>
@@ -48,7 +60,7 @@ const EmployeeList = () => {
                         Add employee
                     </Button>
                 </CardContainer>
-                {employeesQuery.data?.map((emp: any) => {
+                {employeesQueryData?.map((emp: any) => {
                     return <EmployeeCard key={emp.id} employee={emp} />;
                 })}
             </ListContainer>
