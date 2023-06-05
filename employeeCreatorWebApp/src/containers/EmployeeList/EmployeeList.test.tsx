@@ -1,4 +1,12 @@
-import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+import {
+    Vitest,
+    afterEach,
+    beforeEach,
+    describe,
+    expect,
+    test,
+    vi,
+} from "vitest";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { Provider } from "react-redux";
@@ -8,6 +16,7 @@ import * as empList from "./EmployeeList";
 import EmployeeList, { queryWrapper } from "./EmployeeList";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, MemoryRouter } from "react-router-dom";
+import { Employee } from "../../services/employee";
 
 const renderEmployeeList = () => {
     const queryClient = new QueryClient();
@@ -26,7 +35,7 @@ const mockData = [
     {
         dateOfBirth: "2023-06-13T00:00:00.000+00:00",
         email: "alex@gmail.com",
-        firstName: "Alexander",
+        firstName: "Bilbo",
         id: 1,
         lastName: "Gray",
         middleName: "Connor",
@@ -50,6 +59,9 @@ const mockData = [
     },
 ];
 
+vi.mock("../../services/employee");
+
+const mockedGetAll = Employee.getAll as jest.Mock<Promise<any[]>>;
 describe("Employee List test", () => {
     let spy: any;
     beforeEach(() => {
@@ -62,6 +74,7 @@ describe("Employee List test", () => {
     });
 
     test("displays list page and list of employees", async () => {
+        mockedGetAll.mockResolvedValue(mockData);
         const rendered = renderEmployeeList();
 
         const header = rendered.getByText("Employees' list");
@@ -70,7 +83,7 @@ describe("Employee List test", () => {
         expect(header).toBeDefined();
 
         await waitFor(() => {
-            const newUser = rendered.getByText("Alexander Gray");
+            const newUser = rendered.getByText("Bilbo Gray");
             expect(newUser).toBeDefined();
         });
     });
