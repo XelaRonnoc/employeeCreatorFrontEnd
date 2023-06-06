@@ -1,4 +1,4 @@
-name: learn-github-actions
+name: Automated testing for front end
 run-name: tests ran with node.js
 on: 
     workflow_dispatch:
