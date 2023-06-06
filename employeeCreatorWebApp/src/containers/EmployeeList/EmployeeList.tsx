@@ -12,27 +12,29 @@ import { useAppDispatch } from "../../app/hooks.ts";
 import { fillAll } from "../../app/employeesSlice.ts";
 import { useEffect } from "react";
 
-const EmployeeList = () => {
-    const dispatch = useAppDispatch();
-    const employeesQuery = useQuery({
+export const queryWrapper = () => {
+    const query = useQuery({
         queryKey: ["employees"],
         queryFn: Employee.getAll,
     });
-    const navigate = useNavigate();
+    const response = query.data;
+    return response;
+};
 
+const EmployeeList = () => {
+    const dispatch = useAppDispatch();
+    const employeesQueryData = queryWrapper();
+    const navigate = useNavigate();
     const handleClick = (e: any) => {
         e.stopPropagation();
         navigate(`/Employee`);
     };
 
     useEffect(() => {
-        if (employeesQuery.data) {
-            dispatch(fillAll(employeesQuery.data));
+        if (employeesQueryData !== undefined) {
+            dispatch(fillAll(employeesQueryData));
         }
-    }, [employeesQuery.data]);
-
-    if (employeesQuery.isLoading) return <h1>Loading...</h1>;
-    if (employeesQuery.isError) return <h1>Error loading data!</h1>;
+    }, [employeesQueryData]);
     return (
         <PageHolder>
             <HeaderBackground>
@@ -48,7 +50,7 @@ const EmployeeList = () => {
                         Add employee
                     </Button>
                 </CardContainer>
-                {employeesQuery.data?.map((emp: any) => {
+                {employeesQueryData?.map((emp: any) => {
                     return <EmployeeCard key={emp.id} employee={emp} />;
                 })}
             </ListContainer>

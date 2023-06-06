@@ -58,15 +58,11 @@ const registerSchema = Yup.object().shape({
         .required("Start date is required"),
     endDate: Yup.date().when("ongoing", (value) => {
         if (!value[0] || value[0] === "false") {
-            console.log(value);
             return Yup.date().required().typeError("Must Not be Empty");
         } else {
-            console.log(value, "bottom");
             return Yup.date()
                 .nullable()
-                .transform((value, originalValue) =>
-                    originalValue === "" ? null : value
-                )
+                .transform(() => null)
                 .optional()
                 .typeError("");
         }
@@ -115,7 +111,7 @@ export interface EmployeePayload {
     };
     contract: {
         startDate: Date;
-        endDate: Date;
+        endDate: Date | null;
         contractType: String;
         contractTime: String;
         contractedHours: Number;
@@ -162,24 +158,33 @@ const EmployeeForm = () => {
     };
 
     useEffect(() => {
-        if (id) {
-            const curEmployee = findFromStore(allEmployees, parseInt(id));
-            if (curEmployee) {
-                const { address, contract, ...rest } = curEmployee;
-                const destEmp = { ...address, ...contract, ...rest };
-                destEmp.startDate = destEmp.startDate.substring(0, 10);
-                destEmp.endDate
-                    ? (destEmp.endDate = destEmp.endDate.substring(0, 10))
-                    : setOngoing(true);
-                destEmp.dateOfBirth = destEmp.dateOfBirth.substring(0, 10);
-                destEmp.ongoing = destEmp.endDate ? "" : "ongoing"; // checks ongoing box on if no date
-                reset({ ...destEmp });
+        const wrapper = async () => {
+            if (id) {
+                let curEmployee = findFromStore(allEmployees, parseInt(id));
+                if (!curEmployee) {
+                    const response = await Employee.getById(id);
+                    curEmployee = response.data;
+                }
+                if (curEmployee) {
+                    const { address, contract, ...rest } = curEmployee;
+                    const destEmp = { ...address, ...contract, ...rest };
+
+                    destEmp.startDate = destEmp.startDate.substring(0, 10);
+
+                    destEmp.endDate
+                        ? (destEmp.endDate = destEmp.endDate.substring(0, 10))
+                        : setOngoing(true);
+                    destEmp.dateOfBirth = destEmp.dateOfBirth.substring(0, 10);
+                    destEmp.ongoing = destEmp.endDate ? "" : "ongoing"; // checks ongoing box on if no date
+                    reset({ ...destEmp });
+                } else {
+                    navigate("/employee");
+                }
             } else {
-                navigate("/employee");
+                reset();
             }
-        } else {
-            reset();
-        }
+        };
+        wrapper();
     }, []);
 
     const queryClient = useQueryClient();
@@ -224,8 +229,13 @@ const EmployeeForm = () => {
             dateOfBirth,
             ...rest
         } = data;
+
         const empPackage = {
-            dateOfBirth,
+            dateOfBirth: new Date(
+                `${dateOfBirth.getFullYear()}-${
+                    dateOfBirth.getMonth() + 1
+                }-${dateOfBirth.getDate()}`
+            ),
             address: {
                 streetName,
                 streetNumber,
@@ -242,18 +252,32 @@ const EmployeeForm = () => {
                     typeof contractTime === "string"
                         ? contractTime
                         : contractTime[0],
-                startDate,
-                endDate,
+                startDate: new Date(
+                    `${startDate.getFullYear()}-${
+                        startDate.getMonth() + 1
+                    }-${startDate.getDate()}`
+                ),
+                endDate:
+                    endDate === null
+                        ? null
+                        : new Date(
+                              `${endDate.getFullYear()}-${
+                                  endDate.getMonth() + 1
+                              }-${endDate.getDate()}`
+                          ),
                 contractedHours,
             },
             ...rest,
         };
+
         const employee: EmployeePayload = { ...empPackage };
         if (id) {
-            mutation.mutate({ ...employee });
+            await mutation.mutate({ ...employee });
         } else {
-            mutate(employee);
+            await mutate(employee);
         }
+        reset();
+        navigate("/");
     };
 
     const handleClick = () => {
@@ -381,6 +405,7 @@ const EmployeeForm = () => {
                         error={errors.endDate}
                         type="date"
                         {...register("endDate")}
+                        disabled={ongoing ? true : false}
                     />
                     <CheckBoxHolder>
                         <FullCheckBox

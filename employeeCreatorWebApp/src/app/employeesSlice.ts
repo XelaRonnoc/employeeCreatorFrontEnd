@@ -1,9 +1,31 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { EmployeePayload } from "../components/EmployeeForm/EmployeeForm";
 import { RootState } from "./store";
 
+export interface EmployeeDBResponse {
+    firstName: String;
+    middleName: String;
+    lastName: String;
+    email: String;
+    mobileNum: String;
+    dateOfBirth: Date;
+    address: {
+        streetName: String;
+        streetNumber: String;
+        suburb: String;
+        state: String;
+        postCode: String;
+    };
+    contract: {
+        startDate: Date;
+        endDate: Date;
+        contractType: String;
+        contractTime: String;
+        contractedHours: Number;
+    };
+}
+
 interface EmployeeState {
-    value: Array<EmployeePayload>;
+    value: Array<EmployeeDBResponse>;
 }
 
 const initialState: EmployeeState = {
@@ -37,10 +59,10 @@ export const employeeSlice = createSlice({
     name: "employeeHolder",
     initialState,
     reducers: {
-        fillAll: (state, action: PayloadAction<Array<EmployeePayload>>) => {
+        fillAll: (state, action: PayloadAction<Array<EmployeeDBResponse>>) => {
             state.value = action.payload;
         },
-        topUp: (state, action: PayloadAction<EmployeePayload>) => {
+        topUp: (state, action: PayloadAction<EmployeeDBResponse>) => {
             state.value.push(action.payload);
         },
     },
