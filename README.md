@@ -9,7 +9,7 @@
 To Do:
 
 -   Include hosted link
--   Include images of app if CLI or Client App
+-   Include images of app
 
 ---
 
