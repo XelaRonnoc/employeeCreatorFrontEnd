@@ -12,9 +12,11 @@ jobs:
           node-version: 18
       
       - name: Installing Dependencies
-        run: npm install
+        run: |
+            cd employeeCreatorWebApp
+            npm install
         
       - name: run tests
         run: |
-            cd employeeCreatorWebApp
+            
             npm run test
