@@ -1,4 +1,4 @@
-name: Automated testing for front end
+name: OnDemandTesting
 run-name: tests ran with node.js
 on: 
     workflow_dispatch:
