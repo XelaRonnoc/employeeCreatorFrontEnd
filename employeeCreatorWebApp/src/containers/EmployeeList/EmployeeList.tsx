@@ -1,6 +1,6 @@
 import { Employee } from "../../services/employee.ts";
 import EmployeeCard from "../../components/EmployeeCard/EmployeeCard.tsx";
-import { UseQueryResult, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../../StyledComponents/Header/Header.ts";
 import { HeaderBackground } from "../../StyledComponents/HeaderBackground/HeaderBackground.ts";
@@ -35,9 +35,6 @@ const EmployeeList = () => {
             dispatch(fillAll(employeesQueryData));
         }
     }, [employeesQueryData]);
-
-    // if (employeesQuery.isLoading) return <h1>Loading...</h1>;
-    // if (employeesQuery.isError) return <h1>Error loading data!</h1>;
     return (
         <PageHolder>
             <HeaderBackground>

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { Provider } from "react-redux";
 import { store } from "../../app/store";
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import EmployeeList from "./EmployeeList";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
@@ -98,7 +98,9 @@ describe("Employee List test", () => {
     });
 
     test("on remove clicked delete function is called", async () => {
-        mockedDelete.mockImplementation();
+        mockedDelete.mockImplementation(async () => {
+            return null;
+        });
         const rendered = renderEmployeeList();
 
         const buttons = await waitFor(() => {
