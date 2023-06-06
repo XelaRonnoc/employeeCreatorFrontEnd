@@ -1,0 +1,22 @@
+name: OnPushTesting
+run-name: tests ran with node.js
+on: 
+    push:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      
+      - name: Installing Dependencies
+        run: |
+            cd employeeCreatorWebApp
+            npm install
+        
+      - name: run tests
+        run: |
+            cd employeeCreatorWebApp
+            npm run test
