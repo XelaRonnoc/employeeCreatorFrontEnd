@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { Provider } from "react-redux";
-import { store } from "../../app/store";
+import { store } from "../app/store";
 import { render, waitFor } from "@testing-library/react";
-import EmployeeList from "./EmployeeList";
+import EmployeeList from "../containers/EmployeeList/EmployeeList";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
-import { Employee } from "../../services/employee";
+import { Employee } from "../services/employee";
 import userEvent from "@testing-library/user-event";
 
 const renderEmployeeList = () => {
@@ -74,7 +74,7 @@ const mockData = [
     },
 ];
 
-vi.mock("../../services/employee");
+vi.mock("../services/employee");
 
 const mockedGetAll = Employee.getAll as jest.Mock<Promise<any[]>>;
 const mockedDelete = Employee.deleteById as jest.Mock<Promise<any>>;

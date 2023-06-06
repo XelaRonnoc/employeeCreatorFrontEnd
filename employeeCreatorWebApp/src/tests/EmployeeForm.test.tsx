@@ -1,22 +1,21 @@
 import { MemoryRouter } from "react-router-dom";
-import EmployeeForm from "./EmployeeForm";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
-import { store } from "../../app/store";
-import { render, waitFor } from "@testing-library/react";
+import { store } from "../app/store";
+import { render } from "@testing-library/react";
 import { vi } from "vitest";
-import { Employee } from "../../services/employee";
+import { Employee } from "../services/employee";
 import userEvent from "@testing-library/user-event";
-import TestContainer from "../../tests/TestContainer";
-import { useAppSelector } from "../../app/hooks";
+import TestContainer from "./TestContainer";
+import { useAppSelector } from "../app/hooks";
 
 const renderEmployeeForm = () => {
     const queryClient = new QueryClient();
     return render(
         <Provider store={store}>
-            <MemoryRouter>
+            <MemoryRouter initialEntries={[`/Employee`]}>
                 <QueryClientProvider client={queryClient}>
-                    <EmployeeForm />
+                    <TestContainer />
                 </QueryClientProvider>
             </MemoryRouter>
         </Provider>
@@ -89,16 +88,16 @@ const mockData = [
     },
 ];
 
-vi.mock("../../services/employee");
-vi.mock("../../app/hooks");
+vi.mock("../services/employee");
+vi.mock("../app/hooks");
 const mockedUseAppSelector = useAppSelector as jest.Mock<any>;
 const mockedAddEmployee = Employee.addEmployee as jest.Mock<Promise<any[]>>;
 const mockedPutEmployee = Employee.putById as jest.Mock<Promise<any>>;
 
 describe("Employee form tests", () => {
-    test("checks that the API calls will only be done once all required fields are completed and cancel clears all fields on Add Employee", async () => {
+    test("checks that the API calls will only be done once all required fields are completed Add Employee", async () => {
         mockedAddEmployee.mockImplementation(async () => {
-            return new Array();
+            return Array();
         });
 
         const rendered = renderEmployeeForm();
@@ -180,29 +179,22 @@ describe("Employee form tests", () => {
         await user.click(selectContractTime);
         await user.click(selectContractType);
 
-        saveButton = rendered.getByText("Save");
-        expect(saveButton).toBeDefined();
-        await user.click(saveButton);
+        const newSaveButton = rendered.getByText("Save");
+        expect(newSaveButton).toBeDefined();
+        await user.click(newSaveButton);
 
-        await waitFor(() => {
-            expect(mockedAddEmployee).toHaveBeenCalled();
-        });
+        expect(mockedAddEmployee).toHaveBeenCalled();
 
         let newInputFirstName = rendered.container.querySelector(
             `input[name="firstName"]`
         ) as HTMLInputElement;
-        expect(newInputFirstName.value).toBe("Test");
+        expect(newInputFirstName).toBeNull();
 
-        const cancelButton = rendered.getByText("Cancel");
-        await user.click(cancelButton);
-
-        newInputFirstName = rendered.container.querySelector(
-            `input[name="firstName"]`
-        ) as HTMLInputElement;
-        expect(newInputFirstName.value).toBe("");
+        const header = rendered.getByText("Employees' list");
+        expect(header).toBeDefined();
     });
 
-    test("checks that the API calls will only be done once all required fields are completed and cancel clears all fields on edit Employee", async () => {
+    test("checks that the API calls will only be done once all required fields are completed on edit Employee", async () => {
         mockedPutEmployee.mockImplementation(async () => {
             return null;
         });
@@ -219,8 +211,36 @@ describe("Employee form tests", () => {
         const saveButton = rendered.getByText("Save");
         await user.click(saveButton);
         expect(mockedPutEmployee).toBeCalled();
-        // const cancelButton = rendered.getByText("Cancel");
-        // await user.click(cancelButton);
+
+        inputFirstName = rendered.container.querySelector(
+            `input[name="firstName"]`
+        ) as HTMLInputElement;
+        expect(inputFirstName).toBeNull();
+
+        const header = rendered.getByText("Employees' list");
+        expect(header).toBeDefined();
+    });
+
+    test("checks cancel button works", async () => {
+        // mockedPutEmployee.mockImplementation(async () => {
+        //     return null;
+        // });
+        // mockedUseAppSelector.mockImplementation(() => {
+        //     return mockData;
+        // });
+        mockedAddEmployee.mockImplementation(async () => {
+            return Array();
+        });
+        const rendered = renderEmployeeForm();
+        let inputFirstName = rendered.container.querySelector(
+            `input[name="firstName"]`
+        ) as HTMLInputElement;
+        expect(inputFirstName).toBeDefined;
+
+        const user = userEvent.setup();
+        const cancelButton = rendered.getByText("Cancel");
+        expect(cancelButton).toBeDefined();
+        await user.click(cancelButton);
 
         inputFirstName = rendered.container.querySelector(
             `input[name="firstName"]`

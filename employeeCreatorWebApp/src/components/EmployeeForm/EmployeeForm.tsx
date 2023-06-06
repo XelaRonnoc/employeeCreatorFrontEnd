@@ -276,6 +276,7 @@ const EmployeeForm = () => {
         } else {
             await mutate(employee);
         }
+        reset();
         navigate("/");
     };
 
