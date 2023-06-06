@@ -58,10 +58,8 @@ const registerSchema = Yup.object().shape({
         .required("Start date is required"),
     endDate: Yup.date().when("ongoing", (value) => {
         if (!value[0] || value[0] === "false") {
-            console.log(value);
             return Yup.date().required().typeError("Must Not be Empty");
         } else {
-            console.log(value, "bottom");
             return Yup.date()
                 .nullable()
                 .transform((value, originalValue) =>
@@ -167,7 +165,9 @@ const EmployeeForm = () => {
             if (curEmployee) {
                 const { address, contract, ...rest } = curEmployee;
                 const destEmp = { ...address, ...contract, ...rest };
+
                 destEmp.startDate = destEmp.startDate.substring(0, 10);
+                console.log(destEmp.startDate, "Start Date");
                 destEmp.endDate
                     ? (destEmp.endDate = destEmp.endDate.substring(0, 10))
                     : setOngoing(true);
@@ -224,6 +224,8 @@ const EmployeeForm = () => {
             dateOfBirth,
             ...rest
         } = data;
+
+        console.log(startDate, "start Date on Submit");
         const empPackage = {
             dateOfBirth,
             address: {
@@ -242,7 +244,7 @@ const EmployeeForm = () => {
                     typeof contractTime === "string"
                         ? contractTime
                         : contractTime[0],
-                startDate,
+                startDate: new Date(startDate),
                 endDate,
                 contractedHours,
             },
@@ -250,10 +252,11 @@ const EmployeeForm = () => {
         };
         const employee: EmployeePayload = { ...empPackage };
         if (id) {
-            mutation.mutate({ ...employee });
+            await mutation.mutate({ ...employee });
         } else {
-            mutate(employee);
+            await mutate(employee);
         }
+        navigate("/");
     };
 
     const handleClick = () => {

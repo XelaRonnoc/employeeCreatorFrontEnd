@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import EmployeeForm from "./components/EmployeeForm/EmployeeForm";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
+import TestContainer from "./tests/TestContainer";
 
 const queryClient = new QueryClient();
 

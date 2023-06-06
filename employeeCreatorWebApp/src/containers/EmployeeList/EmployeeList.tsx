@@ -23,14 +23,8 @@ export const queryWrapper = () => {
 
 const EmployeeList = () => {
     const dispatch = useAppDispatch();
-
     const employeesQueryData = queryWrapper();
-    // const employeesQuery = useQuery({
-    //     queryKey: ["employees"],
-    //     queryFn: Employee.getAll,
-    // });
     const navigate = useNavigate();
-
     const handleClick = (e: any) => {
         e.stopPropagation();
         navigate(`/Employee`);
@@ -38,7 +32,6 @@ const EmployeeList = () => {
 
     useEffect(() => {
         if (employeesQueryData !== undefined) {
-            console.log(employeesQueryData, "queryData");
             dispatch(fillAll(employeesQueryData));
         }
     }, [employeesQueryData]);
