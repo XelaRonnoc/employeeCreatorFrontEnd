@@ -1,6 +1,8 @@
 # Employee Creator FrontEnd (REACT TS)
 
 ![My Badge](https://github.com/XelaRonnoc/employeeCreatorFrontEnd/actions/workflows/main.yml/badge.svg)
+![My Badge2](https://github.com/XelaRonnoc/employeeCreatorFrontEnd/actions/workflows/onPullRequest.yml/badge.svg)
+![My Badge3](https://github.com/XelaRonnoc/employeeCreatorFrontEnd/actions/workflows/onPush.yml/badge.svg)
 
 ## Demo & Snippets
 
