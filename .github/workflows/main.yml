@@ -1,6 +1,8 @@
 name: Automated testing for front end
 run-name: tests ran with node.js
-on: 
+on: |
+    push
+    pull_request
     workflow_dispatch:
 jobs:
   test:
