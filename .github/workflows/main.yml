@@ -11,4 +11,6 @@ jobs:
         with:
           node-version: 18
       - name: run tests
-        run: npm run test
+        run: |
+            cd employeeCreatorWebApp
+            npm run test
