@@ -1,4 +1,4 @@
-name: OnDemandTesting
+name: OnPullRequestTesting
 run-name: tests ran with node.js
 on: 
     pull_request:
