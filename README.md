@@ -81,6 +81,11 @@ To Do:
 
 ## Change logs
 
+### 06/06/2023 - adding tests, fixing bugs
+- added tests for routing, employeeForm, and employeeList
+- Fixed bug due to conversions from local time to UTC causing dates to creep backwards
+- added feature allowing for page refresh on edit form page without going to standard blank form
+
 ### 05/06/2023 - adding testing
 - testing library setup
 - begun creating front end tests
