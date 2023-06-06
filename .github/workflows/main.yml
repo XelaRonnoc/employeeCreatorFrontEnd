@@ -1,0 +1,14 @@
+name: learn-github-actions
+run-name: tests ran with node.js
+on: 
+    workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 18
+      - name: run tests
+        run: npm run test
