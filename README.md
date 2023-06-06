@@ -1,7 +1,5 @@
 # Employee Creator FrontEnd (REACT TS)
 
-{add test badges here, all projects you build from here on out will have tests, therefore you should have github workflow badges at the top of your repositories: [Github Workflow Badges](https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/adding-a-workflow-status-badge)}
-
 ![My Badge](https://github.com/XelaRonnoc/employeeCreatorFrontEnd/actions/workflows/main.yml/badge.svg)
 
 ## Demo & Snippets
@@ -84,20 +82,22 @@ To Do:
 ## Change logs
 
 ### 06/06/2023 - adding tests, fixing bugs
-- added tests for routing, employeeForm, and employeeList
-- Fixed bug due to conversions from local time to UTC causing dates to creep backwards
-- added feature allowing for page refresh on edit form page without going to standard blank form
-- Fixed ongoing date functionality to allow for employees to have contract end dates or ongoing
+
+-   added tests for routing, employeeForm, and employeeList
+-   Fixed bug due to conversions from local time to UTC causing dates to creep backwards
+-   added feature allowing for page refresh on edit form page without going to standard blank form
+-   Fixed ongoing date functionality to allow for employees to have contract end dates or ongoing
 
 ### 05/06/2023 - adding testing
-- testing library setup
-- begun creating front end tests
+
+-   testing library setup
+-   begun creating front end tests
 
 ### 04/06/2023 - added redux store and yup form validation
 
- -  added Yup form vaidation for the add and update form
- -  added a redux store that allows the edit form to avoid having to talk to the DB and instead can just search the redux store by id
- -  added method for adding ongoing employees (Still has some validation issues although this does not effect functionality but isn't good UX)
+-   added Yup form vaidation for the add and update form
+-   added a redux store that allows the edit form to avoid having to talk to the DB and instead can just search the redux store by id
+-   added method for adding ongoing employees (Still has some validation issues although this does not effect functionality but isn't good UX)
 
 ### 03/06/2023 - Styling
 
@@ -126,6 +126,7 @@ To Do:
 ## What did you struggle with?
 
 ### 05/06/2023
+
 -   Front end mocks for specific functions. I was really stuggling to get the mocks working with TS but after much perserverance I got there.
 
 ---
