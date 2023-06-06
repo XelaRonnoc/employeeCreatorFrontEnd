@@ -2,7 +2,7 @@
 
 {add test badges here, all projects you build from here on out will have tests, therefore you should have github workflow badges at the top of your repositories: [Github Workflow Badges](https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/adding-a-workflow-status-badge)}
 
-https://github.com/XelaRonnoc/employeeCreatorFrontEnd/actions/workflows/main.yml/badge.svg
+![example workflow](https://github.com/XelaRonnoc/employeeCreatorFrontEnd/actions/workflows/main.yml/badge.svg)
 
 ## Demo & Snippets
 
