@@ -85,6 +85,7 @@ To Do:
 - added tests for routing, employeeForm, and employeeList
 - Fixed bug due to conversions from local time to UTC causing dates to creep backwards
 - added feature allowing for page refresh on edit form page without going to standard blank form
+- Fixed ongoing date functionality to allow for employees to have contract end dates or ongoing
 
 ### 05/06/2023 - adding testing
 - testing library setup
