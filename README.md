@@ -6,10 +6,13 @@
 
 ## Demo & Snippets
 
+<img src="./Images/autoFilledFormScreenshot.png" width="1000">
+<img src="./Images/createEmployeeFormScreenshot.png" width="1000">
+<img src="././Images/employeeListScreenshot.png" width="1000">
+
 To Do:
 
 -   Include hosted link
--   Include images of app
 
 ---
 
