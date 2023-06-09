@@ -32,7 +32,7 @@ The purpose of this project is to further develop my skills in REACT typescript 
 
 Additionally this allows for increased exposure to front end unit and E2E testing in REACT.
 
-### stack
+### Stack
 
 The stack utilised is a Spring and MySQL backend with a React Type Script front end.
 This was chosen in order to be able to both improve my skills using Spring (and Java in general) as well as continue to further improve in my ability in React and Typescript front ends. Additionally It will improve skills in E2E testing both from frontend and backend and testing in Java which i have less experience in than I do testing in JavaScript.
@@ -52,8 +52,9 @@ To Do:
 
 To Do:
 
--   Design goals
--   why did you implement this the way you did?
+The Design Goals of this project was to build and develop a roubust component based front end utilising common and widley utilised tools such as redux, styled components, and react-hook-form in order for the project to be easily expanded with new features or used as reference for future projects.
+
+I would have liked to approach this project in a more TDD way however due to introducing a number of librarys I have had previously no expereince utilisng as well as limited expereince in testing within React project I decided it would be more valueable to get the application running and working first before implementing tests. This has been an effective approach that has allowed me to rapidly develop the project to MVP before taking my time to learn and understand the principles of mocking for unit testing in React ts. Whilst difficult I was able to overcome the challenges faced here and provide a solid test suite that can be easily improved upon.
 
 ---
 
@@ -72,6 +73,7 @@ To Do:
 
 -   Remaining bugs, things that have been left unfixed
 -   Features that are buggy / flimsy
+-   E2E testing not implemented
 
 ---
 
@@ -126,8 +128,6 @@ To Do:
 ---
 
 ## What did you struggle with?
-
-### 05/06/2023
 
 -   Front end mocks for specific functions. I was really stuggling to get the mocks working with TS but after much perserverance I got there.
 
