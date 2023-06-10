@@ -222,12 +222,6 @@ describe("Employee form tests", () => {
     });
 
     test("checks cancel button works", async () => {
-        // mockedPutEmployee.mockImplementation(async () => {
-        //     return null;
-        // });
-        // mockedUseAppSelector.mockImplementation(() => {
-        //     return mockData;
-        // });
         mockedAddEmployee.mockImplementation(async () => {
             return Array();
         });
