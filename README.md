@@ -7,12 +7,8 @@
 ## Demo & Snippets
 
 <img src="./Images/autoFilledFormScreenshot.png" width="1000">
-<img src="./Images/createEmployeeFormScreenshot.png" width="1000">
+<img src="./Images/createEmployeeFormscreenShot.png" width="1000">
 <img src="././Images/employeeListScreenshot.png" width="1000">
-
-To Do:
-
--   Include hosted link
 
 ---
 
@@ -46,8 +42,11 @@ This was chosen in order to be able to both improve my skills using Spring (and 
 
 To Do:
 
--   how to build / run project
--   use proper code snippets if there are any commands to run
+```console
+cd employeeCreatorWebApp
+npm run build
+npm run preview
+```
 
 ---
 
@@ -63,10 +62,9 @@ I would have liked to approach this project in a more TDD way however due to int
 
 ## Features
 
-To Do:
-
--   What features does the project have?
--   list them...
+1. List Employee cards on home page displaying information about each employee and their contract length. 
+2. Add new employees utilising the Add Employee form
+3. Edit employees by clicking on the edit button on their card allowing you to utilise the same form pre-filled with all current employee information so you can change only exactly what you want!
 
 ---
 
@@ -82,7 +80,7 @@ To Do:
 
 ## Future Goals
 
--   What are the immediate features you'd add given more time
+-   If given more time I would implement further front end testing allowing for a more robust test suite.
 
 ---
 
@@ -132,15 +130,13 @@ To Do:
 
 ## What did you struggle with?
 
--   Front end mocks for specific functions. I was really stuggling to get the mocks working with TS but after much perserverance I got there.
+-   Frontend mocks for specific functions. I was really stuggling to get the mocks working with TS but after much perserverance I got there.
 
 ---
 
 ## Licensing Details
 
 To Do:
-
--   What type of license are you releasing this under?
 
 ---
 
