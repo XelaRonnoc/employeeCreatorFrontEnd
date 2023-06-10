@@ -1,6 +1,5 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
-import instance from "../services/axios";
 
 const axiosMockInstance = axios.create();
 
